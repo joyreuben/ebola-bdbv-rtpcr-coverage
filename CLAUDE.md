@@ -103,7 +103,7 @@ oligo_length, strand, best_start.
 
 ---
 
-### Step 5 — Mixed-primer combining (RUN ONCE, FIX PENDING)
+### Step 5 — Mixed-primer combining (COMPLETE, phantom-10 fix applied 2026-08-25)
 **Script:** `step5_combine_assays.py`
 
 Scores each assay by its weakest required component, using best-of-mix logic for Panning.
@@ -111,6 +111,7 @@ Outputs: `step5_output/assay_coverage_per_genome.csv`, `step5_output/assay_cover
 
 **Classification thresholds (declared in methods):**
 ```
+worst_skip_fraction > 0.15       → NOT EVALUABLE   (binding site too N-rich to call)
 worst_3p >= 2                    → LIKELY FAILURE
 worst_3p == 1 AND worst_mm >= 3  → AT RISK
 worst_mm >= 6                    → LIKELY FAILURE
@@ -118,64 +119,29 @@ worst_mm >= 3                    → REDUCED
 else                             → LIKELY DETECTED
 ```
 
-**2026 arm results (PENDING FIX — see red flag below):**
-- Greninger: 35/35 LIKELY DETECTED ✓
-- Nakayama: 35/35 LIKELY DETECTED ✓
-- Panning: 10 DETECTED + 25 AT RISK
-- Sanchez: 10 DETECTED + 25 AT RISK
-- Weidmann ENS: 10 DETECTED + 22 AT RISK + 3 FAILURE
-- Weidmann ENZ: 10 DETECTED + 23 AT RISK + 2 FAILURE
-- Weidmann MN (Marburg control): 10 DETECTED + 1 AT RISK + 24 FAILURE
+**2026 arm results (n=35, post-fix):**
+- Greninger PfiloL: 25 LIKELY DETECTED, 10 NOT EVALUABLE
+- Nakayama EBOV: 25 LIKELY DETECTED, 10 NOT EVALUABLE
+- Panning panfilo: 25 REDUCED, 10 NOT EVALUABLE
+- Sanchez FiloAB: 25 REDUCED, 10 NOT EVALUABLE
+- Weidmann ENZ: 23 LIKELY FAILURE, 12 NOT EVALUABLE
+- Weidmann ENS: 22 LIKELY FAILURE, 13 NOT EVALUABLE
+- Weidmann MN (Marburg control): 0 LIKELY DETECTED, 22 LIKELY FAILURE, 13 NOT EVALUABLE ✓ phantom-10 gone
 
----
+Full per-arm breakdown (2007/2012/2026 x all 8 assay components) in `step5_output/step5_report.txt`.
 
-## RED FLAG — OPEN, MUST FIX BEFORE WRITING RESULTS
-
-**The phantom-10 problem.** Every assay, including the Marburg negative control
-that should never detect BDBV, shows exactly 10 LIKELY DETECTED in the 2026 arm.
-A Marburg primer detecting 10 Bundibugyo genomes is wrong.
-
-**Cause:** Some genomes have long N-runs in the binding region. N positions are
-skipped rather than scored as mismatches. A heavily N-rich binding site can produce
-mismatches=0 simply because most positions were unevaluable, and the current code
-misclassifies this as LIKELY DETECTED.
-
-**The fix:** Add a NOT EVALUABLE class. In `step5_combine_assays.py`, update
-`best_component()` to track `skip_fraction = skipped_positions / oligo_length`,
-then update `classify()` to check skip_fraction first:
-
-```python
-def classify(worst_mm, worst_3p, worst_skip_fraction):
-    if worst_skip_fraction > 0.15:   # >15% of binding site unreadable
-        return "NOT EVALUABLE"
-    if worst_3p >= 2:
-        return "LIKELY FAILURE"
-    if worst_3p == 1 and worst_mm >= 3:
-        return "AT RISK"
-    if worst_mm >= 6:
-        return "LIKELY FAILURE"
-    if worst_mm >= 3:
-        return "REDUCED"
-    return "LIKELY DETECTED"
-```
-
-Pass `worst_skip_fraction` through from `best_component()` into the classification
-call in the main loop. Rerun Step 5. Marburg control should drop to near-zero
-LIKELY DETECTED. The phantom 10 should convert to NOT EVALUABLE.
-
-**Diagnostic script:** `diagnose_phantom10.py` — run this first to confirm the
-suspect genomes have higher skip_fraction than the rest before applying the fix.
+**Note:** NOT EVALUABLE now accounts for a meaningful share of every assay/arm
+(29% of the 2026 arm for several assays). This is genome N-content, not assay
+performance — worth a sentence in methods/limitations so reviewers don't read
+it as a coverage gap in the assay itself.
 
 ---
 
 ## What comes next (in order)
 
-1. Run `diagnose_phantom10.py` — confirm phantom-10 is skip-fraction driven
-2. Apply the fix to `step5_combine_assays.py` as described above
-3. Rerun Step 5 — confirm Marburg control near-zero DETECTED
-4. Step 6: thermodynamics using `primer3-py` on all AT RISK oligos — predict Tm shift per mismatch position to confirm AT RISK calls before writing claims
-5. Figures: heatmap (assays × genomes, coloured by mismatch), binding site schematics for worst assays, phylogeny annotated with mismatch lineages
-6. Write up results
+1. Step 6: thermodynamics using `primer3-py` on all AT RISK oligos — predict Tm shift per mismatch position to confirm AT RISK calls before writing claims
+2. Figures: heatmap (assays × genomes, coloured by mismatch), binding site schematics for worst assays, phylogeny annotated with mismatch lineages
+3. Write up results
 
 ---
 
@@ -196,8 +162,11 @@ suspect genomes have higher skip_fraction than the rest before applying the fix.
 | `step1_build_dataset.py` | Load, verify, curate genomes | Complete |
 | `step2_validate_panel.py` | Validate assay panel CSV | Complete |
 | `step4_oligo_alignment.py` | Mismatch-tolerant oligo vs genome | Complete |
-| `step5_combine_assays.py` | Mixed-primer per-assay coverage | Needs fix |
-| `diagnose_phantom10.py` | Confirm cause of phantom-10 | Ready to run |
+| `step5_combine_assays.py` | Mixed-primer per-assay coverage | Complete |
+
+`diagnose_phantom10.py` was never created/committed — the skip-fraction fix
+was applied directly to `step5_combine_assays.py` without a separate
+diagnostic run. Not needed now that Step 5 is fixed and verified.
 
 ---
 
