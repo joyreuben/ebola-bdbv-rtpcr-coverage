@@ -57,10 +57,12 @@ methods section and when responding to reviewer questions later.
 
 ## Suggested commit messages for the known next steps
 
-- `Fix Step 5 classifier: add NOT EVALUABLE class for high skip-fraction sites`
-- `Rerun Step 5 with skip-fraction fix; Marburg control drops to near-zero DETECTED`
-- `Add Step 6 primer3-py thermodynamics for AT RISK oligos`
+Done: Step 5 phantom-10 fix, Step 6 thermodynamics (see `git log` for the
+actual messages used). Remaining:
+
 - `Add coverage heatmap and binding-site schematic figures`
+- `Add phylogeny annotated with mismatch lineages`
+- `Draft results write-up`
 
 ## Checking history
 
@@ -77,10 +79,10 @@ and, if a file looks unfamiliar, open it — don't commit API keys, tokens, or
 anything not meant to be public. The source genome data itself is fine (it's
 OPEN-use-terms Pathoplexus data, already public).
 
-## Known documentation gap
+## Resolved documentation gap (was: known gap)
 
-`CLAUDE.md` references a `diagnose_phantom10.py` script as "ready to run",
-but it wasn't present in the working directory as of this initial commit —
-only `step5_combine_assays.py` exists. Create/commit it before running the
-Step 5 fix workflow described in `CLAUDE.md`, or update `CLAUDE.md` if it was
-renamed or merged elsewhere.
+`CLAUDE.md` used to reference a `diagnose_phantom10.py` script that was
+never present in the working directory. The Step 5 skip-fraction fix was
+applied directly instead, verified working (Marburg control now 0/77
+LIKELY DETECTED), and `CLAUDE.md` was updated to drop the reference. See
+`git log -- CLAUDE.md` for the update commit.
