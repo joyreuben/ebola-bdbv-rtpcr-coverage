@@ -137,11 +137,54 @@ it as a coverage gap in the assay itself.
 
 ---
 
+### Step 6 — Thermodynamics (COMPLETE, scope revised 2026-08-25)
+**Script:** `step6_thermodynamics.py`
+
+Originally scoped (per the old plan below) to run `primer3-py` Tm-shift modeling
+on all AT RISK oligos — but AT RISK is empty post phantom-10 fix (Step 5's
+thresholds route everything into REDUCED or LIKELY FAILURE instead). Rescoped
+to model **REDUCED-tier rows only** (111 of 616 assay-genome rows). This was
+a correctness finding, not a scope shortcut — see below.
+
+**Why LIKELY FAILURE rows are NOT Tm-modeled:** `primer3.calc_heterodimer()`
+does not score the fixed, known binding site from Step 4 — it *searches* for
+whichever local partial alignment is thermodynamically most favorable,
+tolerating large unpaired dangling ends. At low mismatch counts (REDUCED,
+3–5 mm) the full intended site stays the optimum, so the numbers are sound.
+At high mismatch counts (LIKELY FAILURE, 6+ mm) primer3 instead finds a
+short, mostly-unrelated stable sub-stretch and reports *its* Tm — verified
+by hand on WEIDMANN2004_ENZ_P vs one BDBV genome: 8 mismatches produced a
+duplex Tm of **−25°C** (an "89°C shift"), which is a search artifact, not
+biology. primer3 has no mode to force the known fixed-frame alignment.
+Mismatch count/3′-position is already decisive at the LIKELY FAILURE tier
+regardless — that's exactly why Step 5 calls it LIKELY FAILURE — so nothing
+is lost by reporting mismatch counts alone there instead of a misleading Tm
+number. Full technical detail in the script's docstring.
+
+Degenerate IUPAC bases in several primers (Nakayama, Greninger, the Panning/
+Weidmann probes) are resolved per-position against the actual genome base
+using Step 4's own match/mismatch/skip rule before Tm modeling (see
+`realize_duplex()`), so mismatch counts always agree with Step 4/5.
+
+**REDUCED-tier results (worst/classification-driving component, Tm shift in °C):**
+- Panning panfilo / Sanchez FiloAB (share FiloB reverse primer): 4 mismatches → 19.67°C shift, all 54 REDUCED rows identical (same primer/mismatch pattern)
+- Greninger PfiloL_F (2007 arm only, n=3): 5 mismatches on a 17-mer → 36.35°C shift
+
+All REDUCED-tier rows land in the >5°C "THERMO CONFIRMS" band — i.e. even
+the borderline mismatch-count calls correspond to a substantial predicted
+duplex destabilization, not a marginal one.
+
+Outputs: `step6_output/thermodynamics_per_component.csv` (REDUCED tier, all
+components), `step6_output/thermodynamics_summary.csv` (worst-component
+summary), `step6_output/likely_failure_mismatch_summary.csv` (LIKELY FAILURE
+mismatch counts, no Tm), `step6_output/step6_report.txt`.
+
+---
+
 ## What comes next (in order)
 
-1. Step 6: thermodynamics using `primer3-py` on all AT RISK oligos — predict Tm shift per mismatch position to confirm AT RISK calls before writing claims
-2. Figures: heatmap (assays × genomes, coloured by mismatch), binding site schematics for worst assays, phylogeny annotated with mismatch lineages
-3. Write up results
+1. Figures: heatmap (assays × genomes, coloured by mismatch), binding site schematics for worst assays, phylogeny annotated with mismatch lineages
+2. Write up results
 
 ---
 
@@ -151,6 +194,7 @@ it as a coverage gap in the assay itself.
 - Weidmann ENZ (Zaire, mean 5.63) sits closer to BDBV than ENS (Sudan, mean 6.34). Fits known filovirus phylogeny. Worth a sentence.
 - All Weidmann high mismatches against BDBV are expected — species-typing primers for a third species. Report as specificity confirmation, not failure.
 - In silico mismatch predicts risk, it does not prove assay failure. State this plainly every time you make a claim. Wet-lab confirmation is the final word.
+- primer3's `calc_heterodimer()` cannot be trusted for Tm at high mismatch counts — it searches for the best local partial alignment rather than scoring a fixed known site, and finds nonsense (e.g. negative Tm) once mismatches are numerous. Only use it in the REDUCED-mismatch regime. Full explanation in `step6_thermodynamics.py`'s docstring.
 - Co-author needed: someone with diagnostics-lab experience, ideally through GHIDI. Also send courtesy email to INRB Kinshasa (submitting group on the Pathoplexus records) even though the data is open — they may want to be involved.
 
 ---
@@ -163,6 +207,7 @@ it as a coverage gap in the assay itself.
 | `step2_validate_panel.py` | Validate assay panel CSV | Complete |
 | `step4_oligo_alignment.py` | Mismatch-tolerant oligo vs genome | Complete |
 | `step5_combine_assays.py` | Mixed-primer per-assay coverage | Complete |
+| `step6_thermodynamics.py` | primer3-py Tm-shift modeling, REDUCED tier | Complete |
 
 `diagnose_phantom10.py` was never created/committed — the skip-fraction fix
 was applied directly to `step5_combine_assays.py` without a separate
