@@ -1,0 +1,73 @@
+======================================================================
+STEP 5: MIXED-PRIMER-AWARE PER-ASSAY COVERAGE
+======================================================================
+
+Primer mixes scored best-of-members per genome. Assay limited by
+its weakest REQUIRED component. Thresholds are decision aids -
+raw mismatch numbers reported alongside every call.
+
+----------------------------------------------------------------------
+COVERAGE SUMMARY  (% of genomes in each class, per assay x arm)
+----------------------------------------------------------------------
+
+                        assay  outbreak  n_genomes  mean_worst_mm  detected  reduced  at_risk  failure  not_evaluable
+         Greninger2024_PfiloL Bdbv-2007         19           2.16        12        3        0        4              0
+         Greninger2024_PfiloL Bdbv-2012         23           0.00        17        0        0        0              6
+         Greninger2024_PfiloL Bdbv-2026         35           0.00        25        0        0        0             10
+            Nakayama2010_EBOV Bdbv-2007         19           6.58        11        0        0        8              0
+            Nakayama2010_EBOV Bdbv-2012         23           1.48        17        0        0        0              6
+            Nakayama2010_EBOV Bdbv-2026         35           1.43        25        0        0        0             10
+Panning2007_MARVprobe_control Bdbv-2007         19          10.58         0        0        0       19              0
+Panning2007_MARVprobe_control Bdbv-2012         23           6.65         0        0        0       17              6
+Panning2007_MARVprobe_control Bdbv-2026         35           6.31         0        0        0       23             12
+          Panning2007_panfilo Bdbv-2007         19           7.42         0       12        0        7              0
+          Panning2007_panfilo Bdbv-2012         23           2.96         0       17        0        0              6
+          Panning2007_panfilo Bdbv-2026         35           2.86         0       25        0        0             10
+                SanchezFiloAB Bdbv-2007         19           7.58         0       12        0        7              0
+                SanchezFiloAB Bdbv-2012         23           2.96         0       17        0        0              6
+                SanchezFiloAB Bdbv-2026         35           2.86         0       25        0        0             10
+             Weidmann2004_ENS Bdbv-2007         19           9.89         0        0        0       19              0
+             Weidmann2004_ENS Bdbv-2012         23           6.65         0        0        0       17              6
+             Weidmann2004_ENS Bdbv-2026         35           6.34         0        0        0       22             13
+             Weidmann2004_ENZ Bdbv-2007         19           8.74         0        0        0       19              0
+             Weidmann2004_ENZ Bdbv-2012         23           5.91         0        0        0       17              6
+             Weidmann2004_ENZ Bdbv-2026         35           5.63         0        0        0       23             12
+              Weidmann2004_MN Bdbv-2007         19          11.47         0        0        0       19              0
+              Weidmann2004_MN Bdbv-2012         23           8.13         0        0        0       17              6
+              Weidmann2004_MN Bdbv-2026         35           7.66         0        0        0       22             13
+
+----------------------------------------------------------------------
+FOCUS  2026 outbreak arm - the key question
+----------------------------------------------------------------------
+
+  Greninger2024_PfiloL (n=35, mean worst mm=0.0)
+      LIKELY DETECTED: 25
+      NOT EVALUABLE: 10
+
+  Nakayama2010_EBOV (n=35, mean worst mm=1.43)
+      LIKELY DETECTED: 25
+      NOT EVALUABLE: 10
+
+  Panning2007_MARVprobe_control (n=35, mean worst mm=6.31)
+      LIKELY FAILURE: 23
+      NOT EVALUABLE: 12
+
+  Panning2007_panfilo (n=35, mean worst mm=2.86)
+      REDUCED: 25
+      NOT EVALUABLE: 10
+
+  SanchezFiloAB (n=35, mean worst mm=2.86)
+      REDUCED: 25
+      NOT EVALUABLE: 10
+
+  Weidmann2004_ENS (n=35, mean worst mm=6.34)
+      LIKELY FAILURE: 22
+      NOT EVALUABLE: 13
+
+  Weidmann2004_ENZ (n=35, mean worst mm=5.63)
+      LIKELY FAILURE: 23
+      NOT EVALUABLE: 12
+
+  Weidmann2004_MN (n=35, mean worst mm=7.66)
+      LIKELY FAILURE: 22
+      NOT EVALUABLE: 13

@@ -1,0 +1,23 @@
+assay_id,publication_doi,year_designed,target_gene,oligo_type,sequence_5to3,organism_scope,notes,assay_root
+PANNING2007_FiloA2.4,10.1086/520539,2007,L,forward,AAGCATTTCCTAGCAATATGATGGT,pan-filovirus,Panning 2007 diagnostic assay. Forward primer 1 of 3.,PANNING2007_FiloA2.4
+PANNING2007_FiloA2.2,10.1086/520539,2007,L,forward,AAGCCTTTCCTAGCAACATGATGGT,pan-filovirus,Panning 2007. Forward primer 2 of 3.,PANNING2007_FiloA2.2
+PANNING2007_FiloA2.3,10.1086/520539,2007,L,forward,AAGCATTCCCTAGCAACATGATGGT,pan-filovirus,Panning 2007. Forward primer 3 of 3.,PANNING2007_FiloA2.3
+PANNING2007_FiloB,10.1086/520539,2007,L,reverse,ATGTGGTGGGTTATAATAATCACTGACATG,pan-filovirus,Panning 2007. Reverse primer 1 of 2. NOTE identical to Sanchez FILO-B reused in Nakayama - single entry kept here.,PANNING2007_FiloB
+PANNING2007_FiloB-Ra,10.1086/520539,2007,L,reverse,GTGAGGAGGGCTATAAAAGTCACTGACATG,pan-filovirus,Panning 2007. Reverse primer 2 of 2.,PANNING2007_FiloB-Ra
+PANNING2007_FAMEBOSu,10.1086/520539,2007,L,probe,CCGAAATCATCACTNGTNTGGTGCCA,pan-filovirus,Panning 2007 probe for SUDV. INOSINE at 2 positions replaced with N (orig CCGAAATCATCACTIGTITGGTGCCA). FAM/BHQ1 stripped. Exclude inosine positions from mismatch scoring.,PANNING2007_FAMEBOSu
+PANNING2007_FAMEBOg,10.1086/520539,2007,L,probe,CCAAAATCATCACTNGTGTGGTGCCA,pan-filovirus,Panning 2007 probe for EBOV Zaire. INOSINE at 1 position replaced with N (orig CCAAAATCATCACTIGTGTGGTGCCA). FAM/BHQ1 stripped. Exclude inosine position from mismatch scoring.,PANNING2007_FAMEBOg
+PANNING2007_FAMMBG,10.1086/520539,2007,L,probe,CCTATGCTTGCTGAATTGTGGTGCCA,MARV-specific,Panning 2007 probe for Marburg. Specificity control - should NOT match BDBV. FAM/BHQ1 stripped.,PANNING2007_FAMMBG
+NAKAYAMA2010_EBOV_F,10.1128/JCM.02641-09,2010,NP,forward,TGGCAATCAGTDGGACACATGATGGT,EBOV-specific,Nakayama 2010 FiloNP-Fe. Ebola NP typing forward. Degenerate D.,NAKAYAMA2010_EBOV
+NAKAYAMA2010_EBOV_R,10.1128/JCM.02641-09,2010,NP,reverse,GAAGCTGATTTCRTTCTTYTTCTGATGGAA,EBOV-specific,Nakayama 2010 FiloNP-Re. Ebola NP typing reverse. Degenerate R and Y. No probe - conventional gel readout.,NAKAYAMA2010_EBOV
+SANCHEZ1999_FILO_A,10.1128/JCM.02641-09,1999,L,forward,ATCGGAATTTTTCTTTCTCATT,pan-filovirus,FILO-A (Sanchez 1999) as reported in Nakayama 2010. Conventional L-gene assay. Paired with PANNING2007_FiloB (identical FILO-B).,SANCHEZ1999_FILO_A
+WEIDMANN2004_ENZ_F,10.1016/j.jcv.2003.09.004,2004,NP,forward,ATGATGGAAGCTACGGCG,EBOV-Zaire-specific,Weidmann 2004 Table 1 ENZ FP. Ebola Zaire typing forward.,WEIDMANN2004_ENZ
+WEIDMANN2004_ENZ_R,10.1016/j.jcv.2003.09.004,2004,NP,reverse,AGGACCAAGTCATCTGGTGC,EBOV-Zaire-specific,Weidmann 2004 ENZ RP. Ebola Zaire typing reverse.,WEIDMANN2004_ENZ
+WEIDMANN2004_ENZ_P,10.1016/j.jcv.2003.09.004,2004,NP,probe,CCAGAGTTACTCGGAAAACGGCATG,EBOV-Zaire-specific,Weidmann 2004 ENZ P. Zaire probe. FAM/TAMRA stripped.,WEIDMANN2004_ENZ
+WEIDMANN2004_ENS_F,10.1016/j.jcv.2003.09.004,2004,NP,forward,TTGACCCGTATGATGATGAGAGTA,EBOV-Sudan-specific,Weidmann 2004 ENS FP. Ebola Sudan typing forward.,WEIDMANN2004_ENS
+WEIDMANN2004_ENS_R,10.1016/j.jcv.2003.09.004,2004,NP,reverse,CAAATTGAAGAGATCAAGATCTCCT,EBOV-Sudan-specific,Weidmann 2004 ENS RP. Ebola Sudan typing reverse.,WEIDMANN2004_ENS
+WEIDMANN2004_ENS_P,10.1016/j.jcv.2003.09.004,2004,NP,probe,CCTGACTACGAGGATTCGGCTGAAGG,EBOV-Sudan-specific,Weidmann 2004 ENS P. Sudan probe. FAM/TAMRA stripped.,WEIDMANN2004_ENS
+WEIDMANN2004_MN_F,10.1016/j.jcv.2003.09.004,2004,NP,forward,CAATTCCACCTTCAGAAAACTG,MARV-specific,Weidmann 2004 MN FP. Marburg control - should NOT detect BDBV.,WEIDMANN2004_MN
+WEIDMANN2004_MN_R,10.1016/j.jcv.2003.09.004,2004,NP,reverse,GCTAATTTTTCTCGTTTCTGGCT,MARV-specific,Weidmann 2004 MN RP. Marburg control reverse.,WEIDMANN2004_MN
+WEIDMANN2004_MN_P,10.1016/j.jcv.2003.09.004,2004,NP,probe,CACACACAGTCAGACACTAGCCGTCCT,MARV-specific,Weidmann 2004 MN P. Marburg control probe. FAM/TAMRA stripped.,WEIDMANN2004_MN
+GRENINGER2024_PfiloL_F,10.1128/spectrum.01010-24,2024,L,forward,CAYCARGCNTCNTGGCA,pan-filovirus,Greninger 2024 PfiloL_F. INOSINE at 2 positions replaced with N (orig CAYCARGCITCITGGCA). Positions 1819-1835 of AY354458.1. Exclude inosine positions from mismatch scoring.,GRENINGER2024_PfiloL
+GRENINGER2024_PfiloL_R,10.1128/spectrum.01010-24,2024,L,reverse,CAYTGRTTRTCHCCCATNAC,pan-filovirus,Greninger 2024 PfiloL_R. INOSINE at 1 position replaced with N (orig CAYTGRTTRTCHCCCATIAC). Positions 2215-2234 of AY354458.1. Exclude inosine position from mismatch scoring.,GRENINGER2024_PfiloL

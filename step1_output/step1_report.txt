@@ -1,0 +1,114 @@
+======================================================================
+STEP 1: BDBV OPEN DATASET
+======================================================================
+Downloaded : 2026-08-22
+Query      : Pathoplexus ebola-bdbv, Data use terms = OPEN, all outbreaks
+SeqSet     : TODO_create_a_seqset_and_paste_its_id_here
+
+Metadata rows read: 78
+
+Sequences read: 78
+
+Matched records: 78
+
+----------------------------------------------------------------------
+CHECK 1  data use terms
+----------------------------------------------------------------------
+  OPEN: 78
+
+----------------------------------------------------------------------
+CHECK 2  dataset composition
+----------------------------------------------------------------------
+geoLocCountry  Democratic Republic of the Congo  Germany  UNKNOWN  Uganda  missing
+outbreak                                                                          
+Bdbv-2007                                     0        0       10       9        1
+Bdbv-2012                                    23        0        0       0        0
+Bdbv-2026                                    14        1        0      20        0
+
+
+----------------------------------------------------------------------
+CHECK 3  collection date spread
+----------------------------------------------------------------------
+  records with unparseable or missing date: 11
+  Bdbv-2007: n=20, 2007-01-01 to 2007-11-14 (317 days)
+  Bdbv-2012: n=23, 2012-01-01 to 2012-09-21 (264 days)
+  Bdbv-2026: n=35, 2026-05-03 to 2026-07-13 (71 days)
+
+  A narrow span is not a problem, but it is a limitation you
+  must state rather than discover at review.
+
+----------------------------------------------------------------------
+CHECK 4  sequence quality
+----------------------------------------------------------------------
+  reference length (NC_014373.1): 18940
+  observed lengths: min 133, median 18805, max 18942
+
+  ambiguity distribution (non-ACGT fraction):
+    clean (<0.1%): 62
+    low (0.1-1%): 4
+    moderate (1-5%): 6
+    high (>5%): 6
+
+  Nothing is dropped on ambiguity here. What matters is whether an
+  ambiguous base sits inside an oligo binding site, which is a
+  Step 5 question. Genomes with an N in a binding site are scored
+  NOT EVALUABLE for that assay, never as a match.
+
+----------------------------------------------------------------------
+CHECK 5  duplicates
+----------------------------------------------------------------------
+  20 record(s) share an identical sequence with another.
+  Identical genomes are expected within an outbreak and are NOT
+  errors. Only merge them if they are the same sample submitted
+  twice. Check the accessions below by hand:
+      PP_006X6A7.1  md5=206539ea
+      PP_006X64K.1  md5=206539ea
+      PP_006X6EZ.1  md5=8ad3eeca
+      PP_006X6XY.1  md5=8ad3eeca
+      PP_006X5T7.1  md5=8f8ca65b
+      PP_006X5V3.1  md5=8f8ca65b
+      PP_006X5XZ.1  md5=8f8ca65b
+      PP_006X5RB.1  md5=979917ab
+      PP_006X5YX.1  md5=979917ab
+      PP_006X6ZU.1  md5=979917ab
+      PP_006X6KN.1  md5=b0295919
+      PP_006X6PE.1  md5=b0295919
+      PP_006X6T6.1  md5=b0295919
+      PP_006X5W1.1  md5=c7cf6c40
+      PP_006X5U5.1  md5=c7cf6c40
+      PP_006X5S9.1  md5=c7cf6c40
+      PP_006X6FX.1  md5=dec4576a
+      PP_006X6MJ.1  md5=dec4576a
+      PP_006X6NG.1  md5=e85cf409
+      PP_006X6V2.1  md5=e85cf409
+
+  records carrying an INSDC accession: 70
+  Use this column to deduplicate if you also pull from GenBank.
+  Never merge NCBI and Pathoplexus downloads without it.
+
+----------------------------------------------------------------------
+MANUAL EXCLUSION  post-hoc review of the 133 bp outlier flagged above
+----------------------------------------------------------------------
+  PP_006X66F.1 (INSDC LQ278392.1, submitter: Vanatta, R.) is a 133 bp
+  fragment (0.7% of the reference genome), no collection date, no
+  country. Not a patient genome from the 2007 outbreak -- almost
+  certainly a short read, amplicon, or control sequence swept in by
+  the automated ingest.
+
+  Action: row kept in curated_metadata.csv, flagged via the
+  'excluded' column with the note below. Removed from
+  curated_sequences.fasta. Not deleted from the metadata so the
+  dataset stays auditable.
+    excluded: partial sequence (133 bp, 0.7% of reference), INSDC
+    automated ingest
+
+  Curated sequence count after this exclusion: 77 of 78 rows.
+
+======================================================================
+WROTE  step1_output/curated_metadata.csv  (78 rows, 1 flagged excluded)
+WROTE  step1_output/curated_sequences.fasta  (77 sequences)
+======================================================================
+
+NEXT: Step 2, build the assay panel. Then align, and confirm your
+2026 vs 2007 divergence lands near the published 219 nucleotide
+differences. If it does not, the alignment is wrong, not the data.
