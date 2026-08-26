@@ -7,8 +7,8 @@ PANNING2007_FiloB-Ra,best=MARV,3,reverse_complement,CHECK!
 PANNING2007_FAMEBOSu,best=SUDV,0,reverse_complement,OK
 PANNING2007_FAMEBOg,best=EBOV,0,reverse_complement,OK
 PANNING2007_FAMMBG,MARV,0,reverse_complement,OK
-NAKAYAMA2010_EBOV_F,EBOV,0,as_written,OK
-NAKAYAMA2010_EBOV_R,EBOV,0,reverse_complement,OK
+OGAWA2010_EBOV_F,EBOV,0,as_written,OK
+OGAWA2010_EBOV_R,EBOV,0,reverse_complement,OK
 SANCHEZ1999_FILO_A,best=EBOV,1,as_written,OK
 WEIDMANN2004_ENZ_F,EBOV,0,as_written,OK
 WEIDMANN2004_ENZ_R,EBOV,0,reverse_complement,OK

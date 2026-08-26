@@ -79,10 +79,10 @@ ASSAY_STRUCTURE = {
         "probe":   ["PANNING2007_FAMMBG"],
         "required": ["forward", "reverse", "probe"],
     },
-    "Nakayama2010_EBOV": {
+    "Ogawa2010_EBOV": {
         "type": "Conventional (EBOV typing)",
-        "forward": ["NAKAYAMA2010_EBOV_F"],
-        "reverse": ["NAKAYAMA2010_EBOV_R"],
+        "forward": ["OGAWA2010_EBOV_F"],
+        "reverse": ["OGAWA2010_EBOV_R"],
         "probe":   [],
         "required": ["forward", "reverse"],
     },
@@ -263,11 +263,16 @@ def main():
     for (assay, ob), grp in cov.groupby(["assay", "outbreak"]):
         n = len(grp)
         counts = grp["classification"].value_counts()
+        # NOT EVALUABLE rows carry worst_mm=0 as a placeholder (skipped
+        # positions, not a real measurement) - averaging them in with real
+        # mismatch counts silently drags the mean toward zero. Exclude them.
+        evaluable = grp[grp["classification"] != "NOT EVALUABLE"]
+        mean_mm = round(evaluable["worst_mm"].mean(), 2) if len(evaluable) else float("nan")
         row = {
             "assay": assay,
             "outbreak": ob,
             "n_genomes": n,
-            "mean_worst_mm": round(grp["worst_mm"].mean(), 2),
+            "mean_worst_mm": mean_mm,
             "detected": counts.get("LIKELY DETECTED", 0),
             "reduced": counts.get("REDUCED", 0),
             "at_risk": counts.get("AT RISK", 0),
@@ -290,7 +295,8 @@ def main():
         for assay, grp in arm2026.groupby("assay"):
             n = len(grp)
             calls = grp["classification"].value_counts().to_dict()
-            mean_mm = round(grp["worst_mm"].mean(), 2)
+            evaluable = grp[grp["classification"] != "NOT EVALUABLE"]
+            mean_mm = round(evaluable["worst_mm"].mean(), 2) if len(evaluable) else float("nan")
             log(f"  {assay} (n={n}, mean worst mm={mean_mm})")
             for cls in ["LIKELY DETECTED", "REDUCED", "AT RISK", "LIKELY FAILURE", "NOT EVALUABLE"]:
                 if cls in calls:

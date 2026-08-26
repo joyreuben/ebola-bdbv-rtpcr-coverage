@@ -53,7 +53,7 @@ WHY LIKELY FAILURE IS NOT TM-MODELED
 
 CAVEATS ON THE REDUCED-TIER NUMBERS (see step6_report.txt too - keep this
 in the writeup)
-    - Several primers/probes use real IUPAC degenerate bases (Nakayama,
+    - Several primers/probes use real IUPAC degenerate bases (Ogawa,
       Greninger, the Panning/Weidmann probes), not just inosine-N. primer3's
       nearest-neighbor model only accepts ACGT, so every degenerate position
       is first "realized" against the actual genome base using Step 4's own

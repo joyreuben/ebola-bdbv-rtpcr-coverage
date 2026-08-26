@@ -46,8 +46,8 @@ CHECK 5  degenerate base summary
 
   PANNING2007_FAMEBOSu: 2 degenerate positions, 16 expansions
   PANNING2007_FAMEBOg: 1 degenerate positions, 4 expansions
-  NAKAYAMA2010_EBOV_F: 1 degenerate positions, 3 expansions
-  NAKAYAMA2010_EBOV_R: 2 degenerate positions, 4 expansions
+  OGAWA2010_EBOV_F: 1 degenerate positions, 3 expansions
+  OGAWA2010_EBOV_R: 2 degenerate positions, 4 expansions
   GRENINGER2024_PfiloL_F: 4 degenerate positions, 64 expansions
   GRENINGER2024_PfiloL_R: 5 degenerate positions, 96 expansions
 
@@ -58,7 +58,7 @@ CHECK 6  sanity — locate each oligo in its design genome
   designed against, your sequence or your search is wrong.
   Fix this before running Step 3.
 
-  Genomes loaded for sanity check: 77
+  Genomes loaded for sanity check: 70
 
   Sanity genome: PP_006X5RB
 
@@ -70,8 +70,8 @@ CHECK 6  sanity — locate each oligo in its design genome
   ! NOT FOUND: PANNING2007_FAMEBOSu — sequence or oligo_type may be wrong. Check paper.
   ! NOT FOUND: PANNING2007_FAMEBOg — sequence or oligo_type may be wrong. Check paper.
   ! NOT FOUND: PANNING2007_FAMMBG — sequence or oligo_type may be wrong. Check paper.
-  ! NOT FOUND: NAKAYAMA2010_EBOV_F — sequence or oligo_type may be wrong. Check paper.
-  ! NOT FOUND: NAKAYAMA2010_EBOV_R — sequence or oligo_type may be wrong. Check paper.
+  ! NOT FOUND: OGAWA2010_EBOV_F — sequence or oligo_type may be wrong. Check paper.
+  ! NOT FOUND: OGAWA2010_EBOV_R — sequence or oligo_type may be wrong. Check paper.
   ! NOT FOUND: SANCHEZ1999_FILO_A — sequence or oligo_type may be wrong. Check paper.
   ! NOT FOUND: WEIDMANN2004_ENZ_F — sequence or oligo_type may be wrong. Check paper.
   ! NOT FOUND: WEIDMANN2004_ENZ_R — sequence or oligo_type may be wrong. Check paper.
@@ -88,21 +88,21 @@ CHECK 6  sanity — locate each oligo in its design genome
 ======================================================================
 ASSAY PANEL SUMMARY
 ======================================================================
-          assay_root target_gene      organism_scope year_designed           publication_doi            components
-GRENINGER2024_PfiloL           L       pan-filovirus          2024 10.1128/spectrum.01010-24       forward/reverse
-   NAKAYAMA2010_EBOV          NP       EBOV-specific          2010      10.1128/JCM.02641-09       forward/reverse
-PANNING2007_FAMEBOSu           L       pan-filovirus          2007            10.1086/520539                 probe
- PANNING2007_FAMEBOg           L       pan-filovirus          2007            10.1086/520539                 probe
-  PANNING2007_FAMMBG           L       MARV-specific          2007            10.1086/520539                 probe
-PANNING2007_FiloA2.2           L       pan-filovirus          2007            10.1086/520539               forward
-PANNING2007_FiloA2.3           L       pan-filovirus          2007            10.1086/520539               forward
-PANNING2007_FiloA2.4           L       pan-filovirus          2007            10.1086/520539               forward
-   PANNING2007_FiloB           L       pan-filovirus          2007            10.1086/520539               reverse
-PANNING2007_FiloB-Ra           L       pan-filovirus          2007            10.1086/520539               reverse
-  SANCHEZ1999_FILO_A           L       pan-filovirus          1999      10.1128/JCM.02641-09               forward
-    WEIDMANN2004_ENS          NP EBOV-Sudan-specific          2004 10.1016/j.jcv.2003.09.004 forward/probe/reverse
-    WEIDMANN2004_ENZ          NP EBOV-Zaire-specific          2004 10.1016/j.jcv.2003.09.004 forward/probe/reverse
-     WEIDMANN2004_MN          NP       MARV-specific          2004 10.1016/j.jcv.2003.09.004 forward/probe/reverse
+          assay_root target_gene      organism_scope year_designed                publication_doi            components
+GRENINGER2024_PfiloL           L       pan-filovirus          2024      10.1128/spectrum.01010-24       forward/reverse
+      OGAWA2010_EBOV          NP       EBOV-specific          2010 10.1016/j.jviromet.2010.11.010       forward/reverse
+PANNING2007_FAMEBOSu           L       pan-filovirus          2007                 10.1086/520539                 probe
+ PANNING2007_FAMEBOg           L       pan-filovirus          2007                 10.1086/520539                 probe
+  PANNING2007_FAMMBG           L       MARV-specific          2007                 10.1086/520539                 probe
+PANNING2007_FiloA2.2           L       pan-filovirus          2007                 10.1086/520539               forward
+PANNING2007_FiloA2.3           L       pan-filovirus          2007                 10.1086/520539               forward
+PANNING2007_FiloA2.4           L       pan-filovirus          2007                 10.1086/520539               forward
+   PANNING2007_FiloB           L       pan-filovirus          2007                 10.1086/520539               reverse
+PANNING2007_FiloB-Ra           L       pan-filovirus          2007                 10.1086/520539               reverse
+  SANCHEZ1999_FILO_A           L       pan-filovirus          1999 10.1016/j.jviromet.2010.11.010               forward
+    WEIDMANN2004_ENS          NP EBOV-Sudan-specific          2004      10.1016/j.jcv.2003.09.004 forward/probe/reverse
+    WEIDMANN2004_ENZ          NP EBOV-Zaire-specific          2004      10.1016/j.jcv.2003.09.004 forward/probe/reverse
+     WEIDMANN2004_MN          NP       MARV-specific          2004      10.1016/j.jcv.2003.09.004 forward/probe/reverse
 
 Total assays: 14
 Total oligos: 22
