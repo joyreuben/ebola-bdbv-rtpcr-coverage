@@ -33,7 +33,7 @@ Five published RT-PCR assays (22 oligonucleotides total), targeting the L or NP 
 
 | Assay | Gene | Type | DOI |
 |---|---|---|---|
-| Panning 2007 | L | pan-filovirus TaqMan (primer mix) | 10.1086/520600 |
+| Panning 2007 | L | pan-filovirus TaqMan (primer mix) | 10.1086/520539 |
 | Ogawa 2010 | NP | EBOV-specific conventional | 10.1016/j.jviromet.2010.11.010 |
 | Sanchez 1999 | L | pan-filovirus conventional | via Ogawa 2010 |
 | Weidmann 2004 | NP | species-typing TaqMan (Zaire/Sudan/Marburg) | 10.1016/j.jcv.2003.09.004 |
@@ -48,12 +48,9 @@ See [assay_panel.csv](assay_panel.csv) for the full oligo table.
 | 1 | `step1_build_dataset.py` | Load, verify, curate genomes |
 | 2 | `step2_validate_panel.py` | Validate assay panel CSV |
 | 4 | `step4_oligo_alignment.py` | Mismatch-tolerant oligo-vs-genome alignment, IUPAC-aware |
-| 4b | `step4b_target_coverage.py` | Target-site coverage check (binding site absent from a partial record → NOT EVALUABLE) |
 | 5 | `step5_combine_assays.py` | Mixed-primer per-assay coverage classification |
 | 6 | `step6_thermodynamics.py` | primer3-py Tm-shift modeling (REDUCED-tier calls) |
-| 6b | `step6_output/step6b_nn_reanalysis.py` | Pinned-alignment Tm reanalysis (`Bio.SeqUtils.MeltingTemp.Tm_NN`), independent check on Step 6 |
 | 7 | `step7_output/fig1_heatmap.py`, `fig2_binding_schematics.py`, `fig3_phylogeny.py` | Figures |
-| 7 | `step7_output/miqe_oligo_table.py` | MIQE-required oligo table (sequence/gene/source/position) |
 
 (There is no Step 3; numbering follows the project's internal step log in [CLAUDE.md](CLAUDE.md).)
 
@@ -70,14 +67,11 @@ conda install -n amr-multiomics -c bioconda -c conda-forge mafft fasttree -y
 python step1_build_dataset.py
 python step2_validate_panel.py
 python step4_oligo_alignment.py
-python step4b_target_coverage.py      # must run before step 5 - it consumes target_presence.csv
 python step5_combine_assays.py
 python step6_thermodynamics.py
-python step6_output/step6b_nn_reanalysis.py
 python step7_output/fig1_heatmap.py
 python step7_output/fig2_binding_schematics.py
 python step7_output/fig3_phylogeny.py
-python step7_output/miqe_oligo_table.py
 ```
 
 ## Repository layout
@@ -85,12 +79,9 @@ python step7_output/miqe_oligo_table.py
 ```
 step1_output/   curated_sequences.fasta, curated_metadata.csv
 step2_output/   validated_panel.csv
-step4_output/   oligo_vs_genome_full.csv (per-oligo mismatch alignment),
-                target_presence.csv + genome_reference_coverage.csv (step 4b)
-step5_output/   assay_coverage_per_genome.csv, assay_coverage_summary.csv, step5_report.txt,
-                skip_fraction_sensitivity.csv
-step6_output/   thermodynamics_per_component.csv, thermodynamics_summary.csv, step6_report.txt,
-                nn_reanalysis_per_component.csv + nn_vs_primer3_comparison.csv (step 6b)
+step4_output/   oligo_vs_genome_full.csv (per-oligo mismatch alignment)
+step5_output/   assay_coverage_per_genome.csv, assay_coverage_summary.csv, step5_report.txt
+step6_output/   thermodynamics_per_component.csv, thermodynamics_summary.csv, step6_report.txt
 step7_output/   figure-generating scripts + MAFFT/FastTree intermediates
 figures/        final figures (fig1 heatmap, fig2 binding schematics, fig3 phylogeny)
 references/     NCBI RefSeq genomes for EBOV/SUDV/MARV/BDBV
