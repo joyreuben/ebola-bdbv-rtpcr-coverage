@@ -1,0 +1,62 @@
+======================================================================
+STEP 4b: TARGET-SITE COVERAGE DETECTION
+======================================================================
+
+Reference : NC_014373.1 (18940 bp)
+Oligos    : 22
+Genomes   : 70
+
+----------------------------------------------------------------------
+Oligo target sites on NC_014373.1
+----------------------------------------------------------------------
+  PANNING2007_FiloA2.4        13326-13350  (as_written, mm=3)
+  PANNING2007_FiloA2.2        13326-13350  (as_written, mm=1)
+  PANNING2007_FiloA2.3        13326-13350  (as_written, mm=3)
+  PANNING2007_FiloB           13589-13618  (reverse_complement, mm=4)
+  PANNING2007_FiloB-Ra        13589-13618  (reverse_complement, mm=7)
+  PANNING2007_FAMEBOSu        13397-13422  (reverse_complement, mm=1)
+  PANNING2007_FAMEBOg         13397-13422  (reverse_complement, mm=2)
+  PANNING2007_FAMMBG           3815-3840   (reverse_complement, mm=9)
+  OGAWA2010_EBOV_F             1028-1053   (as_written, mm=2)
+  OGAWA2010_EBOV_R             1592-1621   (reverse_complement, mm=1)
+  SANCHEZ1999_FILO_A          13200-13221  (as_written, mm=2)
+  WEIDMANN2004_ENZ_F           2013-2030   (as_written, mm=4)
+  WEIDMANN2004_ENZ_R           1892-1911   (reverse_complement, mm=5)
+  WEIDMANN2004_ENZ_P          13616-13640  (reverse_complement, mm=8)
+  WEIDMANN2004_ENS_F          10892-10915  (reverse_complement, mm=8)
+  WEIDMANN2004_ENS_R           8773-8797   (as_written, mm=9)
+  WEIDMANN2004_ENS_P           1919-1944   (as_written, mm=9)
+  WEIDMANN2004_MN_F            5686-5707   (as_written, mm=6)
+  WEIDMANN2004_MN_R           12408-12430  (as_written, mm=8)
+  WEIDMANN2004_MN_P           14400-14426  (reverse_complement, mm=11)
+  GRENINGER2024_PfiloL_F      13385-13401  (as_written, mm=0)
+  GRENINGER2024_PfiloL_R      13781-13800  (reverse_complement, mm=0)
+
+----------------------------------------------------------------------
+Per-genome reference coverage
+----------------------------------------------------------------------
+  8 genome(s) cover <95% of the reference:
+    PP_006X6B5       6633 bp  covers 34.5%  [11567-18106]
+    PP_00711T3      18480 bp  covers 78.8%  [614-2453; 3814-6653; 7814-18053]
+    PP_006X6U4      18342 bp  covers 88.6%  [3-15342; 16803-18242]
+    PP_006X6QC      18342 bp  covers 89.1%  [3-11742; 13103-18242]
+    PP_006X6JQ      18342 bp  covers 89.1%  [3-11742; 13103-18242]
+    PP_0076YN6      18805 bp  covers 89.6%  [62-9301; 10462-18201]
+    PP_0076RPB      18805 bp  covers 89.6%  [62-9301; 10462-18201]
+    PP_006XHKB      18921 bp  covers 94.2%  [216-18055]
+
+----------------------------------------------------------------------
+ABSENT TARGET SITES  (Step 4 mismatch counts here are artifacts)
+----------------------------------------------------------------------
+  9 of 1540 oligo/genome pairs (0.6%) have an absent target site,
+  across 1 genome(s):
+    PP_006X6B5: 9 oligo(s) - OGAWA2010_EBOV_F, OGAWA2010_EBOV_R, PANNING2007_FAMMBG, WEIDMANN2004_ENS_F, WEIDMANN2004_ENS_P, WEIDMANN2004_ENS_R, WEIDMANN2004_ENZ_F, WEIDMANN2004_ENZ_R, WEIDMANN2004_MN_F
+
+======================================================================
+WROTE  step4_output/target_presence.csv
+WROTE  step4_output/genome_reference_coverage.csv
+======================================================================
+
+NEXT: Step 5 reads target_presence.csv and classifies an assay
+NOT EVALUABLE for a genome when a required component's target site
+is absent, rather than trusting a phantom mismatch count.

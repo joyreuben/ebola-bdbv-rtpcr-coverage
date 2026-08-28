@@ -7,6 +7,8 @@ computational. Follows the AOAC International Appendix Q framework, the FDA mole
 diagnostic assay evaluation template, and reports assay design information consistent with
 MIQE guidelines.
 
+**Status:** analysis complete (Steps 1–7), manuscript in draft. See [manuscript_draft.md](manuscript_draft.md)
+for the full methods/results write-up and [CLAUDE.md](CLAUDE.md) for the detailed project log.
 
 ## Headline finding
 

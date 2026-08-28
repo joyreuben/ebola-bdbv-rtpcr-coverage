@@ -4,7 +4,7 @@ STEP 6: PRIMER3-PY THERMODYNAMICS ON REDUCED / LIKELY FAILURE CALLS
 
 REDUCED rows (Tm-modeled): 108 of 560
 LIKELY FAILURE rows (mismatch-count only, see module docstring
- 'WHY LIKELY FAILURE IS NOT TM-MODELED'): 207 of 560
+ 'WHY LIKELY FAILURE IS NOT TM-MODELED'): 202 of 560
 (AT RISK is empty post phantom-10 fix; LIKELY DETECTED / NOT EVALUABLE
  need no confirmation either way.)
 
@@ -39,19 +39,18 @@ SanchezFiloAB       Bdbv-2007               12
 LIKELY FAILURE  mismatch-count summary (NOT Tm-modeled, see docstring)
 ----------------------------------------------------------------------
                         assay  outbreak  n  mean_worst_mm  min_worst_mm  max_worst_mm
-               Ogawa2010_EBOV Bdbv-2007  1          11.00            11            11
-Panning2007_MARVprobe_control Bdbv-2007 12           9.00             9             9
-Panning2007_MARVprobe_control Bdbv-2012 17           9.00             9             9
-Panning2007_MARVprobe_control Bdbv-2026 23           9.00             9             9
-             Weidmann2004_ENS Bdbv-2007 12           9.08             9            10
-             Weidmann2004_ENS Bdbv-2012 17           9.00             9             9
-             Weidmann2004_ENS Bdbv-2026 22           9.00             9             9
-             Weidmann2004_ENZ Bdbv-2007 12           8.00             8             8
-             Weidmann2004_ENZ Bdbv-2012 17           8.00             8             8
-             Weidmann2004_ENZ Bdbv-2026 23           8.00             8             8
-              Weidmann2004_MN Bdbv-2007 12          11.00            11            11
-              Weidmann2004_MN Bdbv-2012 17          11.00            11            11
-              Weidmann2004_MN Bdbv-2026 22          11.00            11            11
+Panning2007_MARVprobe_control Bdbv-2007 11            9.0             9             9
+Panning2007_MARVprobe_control Bdbv-2012 17            9.0             9             9
+Panning2007_MARVprobe_control Bdbv-2026 23            9.0             9             9
+             Weidmann2004_ENS Bdbv-2007 11            9.0             9             9
+             Weidmann2004_ENS Bdbv-2012 17            9.0             9             9
+             Weidmann2004_ENS Bdbv-2026 22            9.0             9             9
+             Weidmann2004_ENZ Bdbv-2007 11            8.0             8             8
+             Weidmann2004_ENZ Bdbv-2012 17            8.0             8             8
+             Weidmann2004_ENZ Bdbv-2026 23            8.0             8             8
+              Weidmann2004_MN Bdbv-2007 11           11.0            11            11
+              Weidmann2004_MN Bdbv-2012 17           11.0            11            11
+              Weidmann2004_MN Bdbv-2026 22           11.0            11            11
 
 ----------------------------------------------------------------------
 CAVEATS

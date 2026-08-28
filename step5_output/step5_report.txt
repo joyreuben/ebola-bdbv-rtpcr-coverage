@@ -6,35 +6,37 @@ Primer mixes scored best-of-members per genome. Assay limited by
 its weakest REQUIRED component. Thresholds are decision aids -
 raw mismatch numbers reported alongside every call.
 
+Target-presence map loaded: 9 oligo/genome pair(s) have an absent binding site and will be forced NOT EVALUABLE.
+
 ----------------------------------------------------------------------
 COVERAGE SUMMARY  (% of genomes in each class, per assay x arm)
 ----------------------------------------------------------------------
 
                         assay  outbreak  n_genomes  mean_worst_mm  detected  reduced  at_risk  failure  not_evaluable
-         Greninger2024_PfiloL Bdbv-2007         12           0.00        12        0        0        0              0
-         Greninger2024_PfiloL Bdbv-2012         23           0.00        17        0        0        0              6
-         Greninger2024_PfiloL Bdbv-2026         35           0.00        25        0        0        0             10
-               Ogawa2010_EBOV Bdbv-2007         12           2.75        11        0        0        1              0
-               Ogawa2010_EBOV Bdbv-2012         23           2.00        17        0        0        0              6
-               Ogawa2010_EBOV Bdbv-2026         35           2.00        25        0        0        0             10
-Panning2007_MARVprobe_control Bdbv-2007         12           9.00         0        0        0       12              0
-Panning2007_MARVprobe_control Bdbv-2012         23           9.00         0        0        0       17              6
-Panning2007_MARVprobe_control Bdbv-2026         35           9.00         0        0        0       23             12
-          Panning2007_panfilo Bdbv-2007         12           4.00         0       12        0        0              0
-          Panning2007_panfilo Bdbv-2012         23           4.00         0       17        0        0              6
-          Panning2007_panfilo Bdbv-2026         35           4.00         0       25        0        0             10
-                SanchezFiloAB Bdbv-2007         12           4.00         0       12        0        0              0
-                SanchezFiloAB Bdbv-2012         23           4.00         0       17        0        0              6
-                SanchezFiloAB Bdbv-2026         35           4.00         0       25        0        0             10
-             Weidmann2004_ENS Bdbv-2007         12           9.08         0        0        0       12              0
-             Weidmann2004_ENS Bdbv-2012         23           9.00         0        0        0       17              6
-             Weidmann2004_ENS Bdbv-2026         35           9.00         0        0        0       22             13
-             Weidmann2004_ENZ Bdbv-2007         12           8.00         0        0        0       12              0
-             Weidmann2004_ENZ Bdbv-2012         23           8.00         0        0        0       17              6
-             Weidmann2004_ENZ Bdbv-2026         35           8.00         0        0        0       23             12
-              Weidmann2004_MN Bdbv-2007         12          11.00         0        0        0       12              0
-              Weidmann2004_MN Bdbv-2012         23          11.00         0        0        0       17              6
-              Weidmann2004_MN Bdbv-2026         35          11.00         0        0        0       22             13
+         Greninger2024_PfiloL Bdbv-2007         12            0.0        12        0        0        0              0
+         Greninger2024_PfiloL Bdbv-2012         23            0.0        17        0        0        0              6
+         Greninger2024_PfiloL Bdbv-2026         35            0.0        25        0        0        0             10
+               Ogawa2010_EBOV Bdbv-2007         12            2.0        11        0        0        0              1
+               Ogawa2010_EBOV Bdbv-2012         23            2.0        17        0        0        0              6
+               Ogawa2010_EBOV Bdbv-2026         35            2.0        25        0        0        0             10
+Panning2007_MARVprobe_control Bdbv-2007         12            9.0         0        0        0       11              1
+Panning2007_MARVprobe_control Bdbv-2012         23            9.0         0        0        0       17              6
+Panning2007_MARVprobe_control Bdbv-2026         35            9.0         0        0        0       23             12
+          Panning2007_panfilo Bdbv-2007         12            4.0         0       12        0        0              0
+          Panning2007_panfilo Bdbv-2012         23            4.0         0       17        0        0              6
+          Panning2007_panfilo Bdbv-2026         35            4.0         0       25        0        0             10
+                SanchezFiloAB Bdbv-2007         12            4.0         0       12        0        0              0
+                SanchezFiloAB Bdbv-2012         23            4.0         0       17        0        0              6
+                SanchezFiloAB Bdbv-2026         35            4.0         0       25        0        0             10
+             Weidmann2004_ENS Bdbv-2007         12            9.0         0        0        0       11              1
+             Weidmann2004_ENS Bdbv-2012         23            9.0         0        0        0       17              6
+             Weidmann2004_ENS Bdbv-2026         35            9.0         0        0        0       22             13
+             Weidmann2004_ENZ Bdbv-2007         12            8.0         0        0        0       11              1
+             Weidmann2004_ENZ Bdbv-2012         23            8.0         0        0        0       17              6
+             Weidmann2004_ENZ Bdbv-2026         35            8.0         0        0        0       23             12
+              Weidmann2004_MN Bdbv-2007         12           11.0         0        0        0       11              1
+              Weidmann2004_MN Bdbv-2012         23           11.0         0        0        0       17              6
+              Weidmann2004_MN Bdbv-2026         35           11.0         0        0        0       22             13
 
 ----------------------------------------------------------------------
 FOCUS  2026 outbreak arm - the key question

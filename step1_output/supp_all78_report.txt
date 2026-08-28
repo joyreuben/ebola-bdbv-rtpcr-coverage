@@ -1,0 +1,117 @@
+==============================================================================
+SUPPLEMENTARY: all 78 downloaded records (70 curated + 8 excluded),
+per-assay classification, side by side
+==============================================================================
+
+Panning2007_panfilo
+  70 curated (main dataset):
+    REDUCED          54
+    NOT EVALUABLE    16
+  8 excluded (this supplementary check):
+    HC918458       mm=14  3p_mm=1  skip=0.077  -> LIKELY FAILURE
+    HC918461       mm=12  3p_mm=1  skip=0.077  -> LIKELY FAILURE
+    HV753272       mm=14  3p_mm=1  skip=0.077  -> LIKELY FAILURE
+    HV753275       mm=12  3p_mm=1  skip=0.077  -> LIKELY FAILURE
+    HZ164395       mm=14  3p_mm=1  skip=0.077  -> LIKELY FAILURE
+    HZ164398       mm=12  3p_mm=1  skip=0.077  -> LIKELY FAILURE
+    LQ278392       mm=15  3p_mm=1  skip=0.077  -> LIKELY FAILURE
+    LQ278396       mm=15  3p_mm=3  skip=0.077  -> LIKELY FAILURE
+
+Panning2007_MARVprobe_control
+  70 curated (main dataset):
+    LIKELY FAILURE    52
+    NOT EVALUABLE     18
+  8 excluded (this supplementary check):
+    HC918458       mm=14  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HC918461       mm=12  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HV753272       mm=14  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HV753275       mm=12  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HZ164395       mm=14  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HZ164398       mm=12  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278392       mm=15  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    LQ278396       mm=15  3p_mm=3  skip=0.000  -> LIKELY FAILURE
+
+Ogawa2010_EBOV
+  70 curated (main dataset):
+    LIKELY DETECTED    53
+    NOT EVALUABLE      16
+    LIKELY FAILURE      1
+  8 excluded (this supplementary check):
+    HC918458       mm=13  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HC918461       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HV753272       mm=13  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HV753275       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HZ164395       mm=13  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HZ164398       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278392       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278396       mm=14  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+
+SanchezFiloAB
+  70 curated (main dataset):
+    REDUCED          54
+    NOT EVALUABLE    16
+  8 excluded (this supplementary check):
+    HC918458       mm=14  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HC918461       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HV753272       mm=14  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HV753275       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HZ164395       mm=14  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HZ164398       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278392       mm=15  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    LQ278396       mm=15  3p_mm=3  skip=0.000  -> LIKELY FAILURE
+
+Weidmann2004_ENZ
+  70 curated (main dataset):
+    LIKELY FAILURE    52
+    NOT EVALUABLE     18
+  8 excluded (this supplementary check):
+    HC918458       mm=10  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HC918461       mm=10  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HV753272       mm=10  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HV753275       mm=10  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HZ164395       mm=10  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HZ164398       mm=10  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278392       mm=11  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278396       mm=10  3p_mm=4  skip=0.000  -> LIKELY FAILURE
+
+Weidmann2004_ENS
+  70 curated (main dataset):
+    LIKELY FAILURE    51
+    NOT EVALUABLE     19
+  8 excluded (this supplementary check):
+    HC918458       mm=11  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HC918461       mm=11  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HV753272       mm=11  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HV753275       mm=11  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HZ164395       mm=11  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    HZ164398       mm=11  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    LQ278392       mm=14  3p_mm=1  skip=0.000  -> LIKELY FAILURE
+    LQ278396       mm=13  3p_mm=3  skip=0.000  -> LIKELY FAILURE
+
+Weidmann2004_MN
+  70 curated (main dataset):
+    LIKELY FAILURE    51
+    NOT EVALUABLE     19
+  8 excluded (this supplementary check):
+    HC918458       mm=12  3p_mm=4  skip=0.000  -> LIKELY FAILURE
+    HC918461       mm=12  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HV753272       mm=12  3p_mm=4  skip=0.000  -> LIKELY FAILURE
+    HV753275       mm=12  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    HZ164395       mm=12  3p_mm=4  skip=0.000  -> LIKELY FAILURE
+    HZ164398       mm=12  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278392       mm=13  3p_mm=2  skip=0.000  -> LIKELY FAILURE
+    LQ278396       mm=14  3p_mm=4  skip=0.000  -> LIKELY FAILURE
+
+Greninger2024_PfiloL
+  70 curated (main dataset):
+    LIKELY DETECTED    54
+    NOT EVALUABLE      16
+  8 excluded (this supplementary check):
+    HC918458       mm= 6  3p_mm=0  skip=0.118  -> LIKELY FAILURE
+    HC918461       mm= 5  3p_mm=0  skip=0.118  -> REDUCED
+    HV753272       mm= 6  3p_mm=0  skip=0.118  -> LIKELY FAILURE
+    HV753275       mm= 5  3p_mm=0  skip=0.118  -> REDUCED
+    HZ164395       mm= 6  3p_mm=0  skip=0.118  -> LIKELY FAILURE
+    HZ164398       mm= 5  3p_mm=0  skip=0.118  -> REDUCED
+    LQ278392       mm= 7  3p_mm=1  skip=0.118  -> LIKELY FAILURE
+    LQ278396       mm= 8  3p_mm=2  skip=0.118  -> LIKELY FAILURE

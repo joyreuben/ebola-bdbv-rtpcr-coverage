@@ -46,6 +46,7 @@ import pandas as pd
 
 FULL = Path("step4_output/oligo_vs_genome_full.csv")
 META = Path("step1_output/curated_metadata.csv")
+PRESENCE = Path("step4_output/target_presence.csv")   # from step4b
 OUT_DIR = Path("step5_output")
 
 # --------------------------------------------------------------------
@@ -131,7 +132,15 @@ ASSAY_STRUCTURE = {
 # These are decision aids, not measurements.
 # --------------------------------------------------------------------
 
-def classify(worst_mm: int, worst_3p: int, worst_skip_fraction: float) -> str:
+def classify(worst_mm: int, worst_3p: int, worst_skip_fraction: float,
+             target_absent: bool = False) -> str:
+    if target_absent:
+        # A required component's binding site is not spanned by this genome
+        # record at all (Step 4b). Step 4 still returned a mismatch count for
+        # it, but that count came from sliding the oligo over some unrelated
+        # region - it is an artifact, not a measurement, and must never be
+        # classified as a detection outcome. See step4b_target_coverage.py.
+        return "NOT EVALUABLE"
     if worst_skip_fraction > 0.15:
         return "NOT EVALUABLE"       # binding site too unresolved (N/gap) to call
     if worst_3p >= 2 or worst_mm >= 6:
@@ -143,7 +152,7 @@ def classify(worst_mm: int, worst_3p: int, worst_skip_fraction: float) -> str:
     return "LIKELY DETECTED"             # none, or minor internal mismatches
 
 
-def best_component(df, oligo_ids):
+def best_component(df, oligo_ids, absent_pairs=frozenset()):
     """
     Given the full per-oligo/per-genome frame and a list of oligo ids that
     form a mix, return, per genome, the best (min mismatch) member, its
@@ -151,8 +160,20 @@ def best_component(df, oligo_ids):
     the binding site - a low mismatch count there is not evidence of a
     match, it's an absence of data). Returns a DataFrame indexed by
     genome_id.
+
+    Oligo/genome pairs whose binding site is not spanned by the genome at all
+    (absent_pairs, from Step 4b) are DROPPED BEFORE the best-member pick, not
+    filtered afterwards. This matters for primer mixes: such a pair carries a
+    phantom mismatch count from unrelated sequence, which can be spuriously
+    low, and would otherwise be selected as the "best" member over a genuine
+    member with a real, higher count. A genome missing from the returned frame
+    for a role means every member of that role is absent.
     """
     sub = df[df["assay_id"].isin(oligo_ids)].copy()
+    if absent_pairs:
+        keep = [(a, g) not in absent_pairs
+                for a, g in zip(sub["assay_id"], sub["genome_id"])]
+        sub = sub[keep]
     if sub.empty:
         return None
     sub["skip_frac"] = sub["skipped_positions"] / sub["oligo_length"]
@@ -199,39 +220,68 @@ def main():
     log("raw mismatch numbers reported alongside every call.")
     log()
 
+    # Target-site presence from Step 4b. An oligo whose binding site is not
+    # spanned by a genome record still gets a mismatch count from Step 4, but
+    # that count is measured against unrelated sequence. Treat as NOT EVALUABLE.
+    absent_pairs = set()
+    if PRESENCE.exists():
+        pres = pd.read_csv(PRESENCE)
+        absent_pairs = set(
+            map(tuple, pres.loc[~pres["target_present"],
+                                ["assay_id", "genome_id"]].values))
+        log(f"Target-presence map loaded: {len(absent_pairs)} oligo/genome "
+            f"pair(s) have an absent binding site and will be forced "
+            f"NOT EVALUABLE.")
+    else:
+        log("WARNING: step4_output/target_presence.csv not found - run")
+        log("         step4b_target_coverage.py. Partial genomes whose target")
+        log("         site is absent will be scored on unrelated sequence.")
+    log()
+
     rows = []
     for assay_name, struct in ASSAY_STRUCTURE.items():
         comp_best = {}
         for role in ("forward", "reverse", "probe"):
             ids = struct.get(role, [])
             if ids:
-                comp_best[role] = best_component(df, ids)
+                comp_best[role] = best_component(df, ids, absent_pairs)
 
         genomes = df["genome_id"].unique()
         for g in genomes:
             required = struct["required"]
             comp_mm, comp_3p, comp_skip, chosen = {}, {}, {}, {}
-            usable = True
+            target_absent = False
             for role in required:
                 cb = comp_best.get(role)
-                if cb is None or g not in cb.index:
-                    usable = False
-                    break
+                if cb is None:
+                    continue
+                if g not in cb.index:
+                    # Every member of this required role had its binding site
+                    # dropped as absent (Step 4b), so there is nothing real
+                    # left to score for this role in this genome.
+                    target_absent = True
+                    continue
                 comp_mm[role] = int(cb.loc[g, "mm"])
                 comp_3p[role] = int(cb.loc[g, "mm_3p"])
                 comp_skip[role] = float(cb.loc[g, "skip_frac"])
                 chosen[role] = cb.loc[g, "best_member"]
-            if not usable:
-                continue
 
-            worst_role = max(comp_mm, key=lambda r: (comp_mm[r], comp_3p[r]))
-            worst_mm = comp_mm[worst_role]
-            worst_3p = comp_3p[worst_role]
-            # NOT EVALUABLE if ANY required component's best member sits on
-            # a mostly-unresolved (N/gap) part of the genome - a low
-            # mismatch count there reflects missing data, not a real match.
-            worst_skip = max(comp_skip.values())
-            call = classify(worst_mm, worst_3p, worst_skip)
+            if not comp_mm and not target_absent:
+                continue   # genome not present in the data at all
+
+            if comp_mm:
+                worst_role = max(comp_mm, key=lambda r: (comp_mm[r], comp_3p[r]))
+                worst_mm = comp_mm[worst_role]
+                worst_3p = comp_3p[worst_role]
+                # NOT EVALUABLE if ANY required component's best member sits on
+                # a mostly-unresolved (N/gap) part of the genome - a low
+                # mismatch count there reflects missing data, not a real match.
+                worst_skip = max(comp_skip.values())
+            else:
+                worst_role, worst_mm, worst_3p, worst_skip = "absent", 0, 0, 0.0
+
+            call = classify(worst_mm, worst_3p, worst_skip,
+                            target_absent=target_absent)
 
             rows.append({
                 "assay": assay_name,
@@ -245,6 +295,7 @@ def main():
                 "worst_mm": worst_mm,
                 "worst_3p_mm": worst_3p,
                 "worst_skip_fraction": round(worst_skip, 3),
+                "target_absent": target_absent,
                 "classification": call,
                 "chosen_forward": chosen.get("forward"),
                 "chosen_reverse": chosen.get("reverse"),

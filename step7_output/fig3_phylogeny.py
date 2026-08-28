@@ -5,25 +5,39 @@ FastTree GTR, both run once as part of this figure's pipeline - see
 step7_output/mafft.log and fasttree.log), annotated with two tip strips:
 
   1. outbreak arm (2007 / 2012 / 2026) - categorical
-  2. Ogawa 2010 (EBOV NP) worst-component mismatch count - the one assay
-     with real per-genome variation (0-11 mm) rather than a flat value, so
-     it is the metric actually worth checking against tree structure.
-     (Panning/Sanchez FiloB, the project's headline REDUCED-tier result,
-     is a uniform 4 mm across every evaluable genome in every arm - useful
-     as a numeric fact in Step 5/6, but a constant has no texture to show
-     on a tree, so it is not the annotation used here.)
+  2. Panning/Sanchez FiloB worst-component mismatch count - the project's
+     headline REDUCED-tier result.
 
-The question this figure answers visually: does high/low Ogawa mismatch
-cluster with a particular clade or outbreak arm (which would suggest a
-lineage-specific effect), or is it scattered across the tree regardless of
-arm (consistent with the "species-level gap, not a newly evolving
-mutation" reading)? Includes the single MS811591 (Bdbv-2007) outlier
-flagged in Step 5/6 at 11 mm.
+WHY THIS ANNOTATION CHANGED (2026-08-28)
+    This figure previously annotated tips with the Ogawa 2010 mismatch
+    count, on the stated grounds that Ogawa was "the one assay with real
+    per-genome variation (0-11 mm)" while everything else was flat. That
+    variation was not real. It was a single record, MS811591 (PP_006X6B5,
+    a 6,633 bp partial genome), whose Ogawa binding site is not contained
+    in the record at all - Step 4 had scored the primers against unrelated
+    sequence and returned a phantom 11 mm. With Step 4b's coverage check in
+    place, that pair is NOT EVALUABLE and Ogawa is a uniform 2 mm across
+    every evaluable genome in every arm.
+
+    So no assay in this panel has per-genome texture. That is not a reason
+    to drop the figure - it IS the finding, and it is stronger stated
+    positively: the tree carries clear phylogenetic structure (three
+    outbreak-pure clades, sampled ~19 years apart), and against that
+    structure the assay mismatch count is invariant. A flat strip beside a
+    structured tree is exactly the right picture for "species-level
+    divergence, not lineage-specific drift". The annotation is therefore
+    switched to the primer the paper actually reports on.
+
+The question this figure answers visually: does the FiloB mismatch level
+track clade structure or outbreak arm (which would suggest a lineage-
+specific effect), or is it invariant across a tree that is itself clearly
+structured (consistent with the "species-level gap, not a newly evolving
+mutation" reading)?
 
 Genome IDs are not shown as tip labels (70 leaves, unreadable) - only the
 two colour strips plus a legend. Reads step1_output/curated_metadata.csv
 for outbreak arm and step5_output/assay_coverage_per_genome.csv for the
-Ogawa mismatch call.
+Panning/Sanchez FiloB mismatch call.
 """
 
 from pathlib import Path
@@ -59,13 +73,18 @@ def main():
     arm_by_id = meta.set_index("genome_id")["outbreak"].to_dict()
 
     cov = pd.read_csv("step5_output/assay_coverage_per_genome.csv")
-    ogawa = cov[cov.assay == "Ogawa2010_EBOV"].set_index("genome_id")
-    mm_by_id = ogawa["worst_mm"].to_dict()
-    cls_by_id = ogawa["classification"].to_dict()
+    assay = cov[cov.assay == "Panning2007_panfilo"].set_index("genome_id")
+    mm_by_id = assay["worst_mm"].to_dict()
+    cls_by_id = assay["classification"].to_dict()
 
     terminals = tree.get_terminals()
     n = len(terminals)
-    vmax = max(v for k, v in mm_by_id.items() if cls_by_id.get(k) != "NOT EVALUABLE")
+    # Scale to the classification thresholds, not to the observed range. The
+    # observed range is a single value (the finding is that it is invariant),
+    # so a data-driven vmax would map that constant onto the top of the ramp
+    # and imply a spread that does not exist. Fixing the scale at the
+    # LIKELY FAILURE boundary keeps the colour honest and comparable to Fig 1.
+    vmax = 6
 
     cmap = LinearSegmentedColormap.from_list("seq_blue", SEQ_BLUE, N=256)
 
@@ -112,7 +131,7 @@ def main():
         ax_strip.add_patch(Rectangle((1, y - 0.5), 1, 1, facecolor=mm_color, edgecolor=SURFACE, linewidth=0.3))
 
     ax_strip.set_xticks([0.5, 1.5])
-    ax_strip.set_xticklabels(["arm", "Ogawa\nmm"], fontsize=6.5, color=INK_SECONDARY, rotation=90)
+    ax_strip.set_xticklabels(["arm", "FiloB\nmm"], fontsize=6.5, color=INK_SECONDARY, rotation=90)
     ax_strip.set_yticks([])
     ax_strip.tick_params(length=0, pad=2)
     for spine in ax_strip.spines.values():
@@ -133,10 +152,10 @@ def main():
     cbar_ax = fig.add_axes([0.90, 0.30, 0.02, 0.35])
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=0, vmax=vmax))
     cbar = fig.colorbar(sm, cax=cbar_ax)
-    cbar.set_label("Ogawa 2010 EBOV NP\nmismatches", fontsize=8, color=INK_SECONDARY)
+    cbar.set_label("Panning/Sanchez FiloB\nmismatches", fontsize=8, color=INK_SECONDARY)
     cbar.ax.tick_params(labelsize=8, labelcolor=INK_SECONDARY)
 
-    fig.suptitle("Ogawa-assay mismatch level is scattered across the BDBV tree, not confined to one outbreak lineage",
+    fig.suptitle("BDBV genomes form three outbreak-pure clades, but assay mismatch is invariant across all of them",
                  fontsize=10.5, color=INK_PRIMARY, y=0.995)
 
     fig.savefig(OUT / "fig3_phylogeny.png", dpi=300, bbox_inches="tight", facecolor=SURFACE)
