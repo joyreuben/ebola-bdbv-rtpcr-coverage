@@ -23,8 +23,11 @@ import pandas as pd
 df = pd.read_csv("step5_output/assay_coverage_per_genome.csv")
 
 
-def classify(worst_mm, worst_3p, worst_skip, cutoff):
-    if worst_skip > cutoff:
+def classify(worst_mm, worst_3p, worst_skip, cutoff, target_absent=False):
+    # target_absent rows carry placeholder zeros (Step 4b: the record does not
+    # span the binding site). They are NOT EVALUABLE at every cutoff; without
+    # this they fall through to LIKELY DETECTED.
+    if target_absent or worst_skip > cutoff:
         return "NOT EVALUABLE"
     if worst_3p >= 2 or worst_mm >= 6:
         return "LIKELY FAILURE"
@@ -38,7 +41,8 @@ def classify(worst_mm, worst_3p, worst_skip, cutoff):
 cutoffs = [0.10, 0.15, 0.20]
 for c in cutoffs:
     df[f"classification_{c}"] = df.apply(
-        lambda r: classify(r["worst_mm"], r["worst_3p_mm"], r["worst_skip_fraction"], c),
+        lambda r: classify(r["worst_mm"], r["worst_3p_mm"], r["worst_skip_fraction"], c,
+                           bool(r["target_absent"])),
         axis=1)
 
 df.to_csv("step5_output/skip_fraction_sensitivity.csv", index=False)

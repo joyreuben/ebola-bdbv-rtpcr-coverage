@@ -1,7 +1,7 @@
 assay,outbreak,classification,n,mean_tm_shift,min_tm_shift,max_tm_shift
 Panning2007_panfilo,Bdbv-2007,REDUCED,12,19.67,19.67,19.67
-Panning2007_panfilo,Bdbv-2012,REDUCED,17,19.67,19.67,19.67
-Panning2007_panfilo,Bdbv-2026,REDUCED,25,19.67,19.67,19.67
+Panning2007_panfilo,Bdbv-2012,REDUCED,23,19.67,19.67,19.67
+Panning2007_panfilo,Bdbv-2026,REDUCED,33,19.67,19.67,19.67
 SanchezFiloAB,Bdbv-2007,REDUCED,12,19.67,19.67,19.67
-SanchezFiloAB,Bdbv-2012,REDUCED,17,19.67,19.67,19.67
-SanchezFiloAB,Bdbv-2026,REDUCED,25,19.67,19.67,19.67
+SanchezFiloAB,Bdbv-2012,REDUCED,23,19.67,19.67,19.67
+SanchezFiloAB,Bdbv-2026,REDUCED,33,19.67,19.67,19.67

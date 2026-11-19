@@ -6,6 +6,7 @@ Primer mixes scored best-of-members per genome. Assay limited by
 its weakest REQUIRED component. Thresholds are decision aids -
 raw mismatch numbers reported alongside every call.
 
+Expected-site resolution loaded: 25 oligo/genome pair(s) have a present but >15% unresolved binding site.
 Target-presence map loaded: 9 oligo/genome pair(s) have an absent binding site and will be forced NOT EVALUABLE.
 
 ----------------------------------------------------------------------
@@ -14,62 +15,62 @@ COVERAGE SUMMARY  (% of genomes in each class, per assay x arm)
 
                         assay  outbreak  n_genomes  mean_worst_mm  detected  reduced  at_risk  failure  not_evaluable
          Greninger2024_PfiloL Bdbv-2007         12            0.0        12        0        0        0              0
-         Greninger2024_PfiloL Bdbv-2012         23            0.0        17        0        0        0              6
-         Greninger2024_PfiloL Bdbv-2026         35            0.0        25        0        0        0             10
+         Greninger2024_PfiloL Bdbv-2012         23            0.0        23        0        0        0              0
+         Greninger2024_PfiloL Bdbv-2026         35            0.0        34        0        0        0              1
                Ogawa2010_EBOV Bdbv-2007         12            2.0        11        0        0        0              1
-               Ogawa2010_EBOV Bdbv-2012         23            2.0        17        0        0        0              6
-               Ogawa2010_EBOV Bdbv-2026         35            2.0        25        0        0        0             10
+               Ogawa2010_EBOV Bdbv-2012         23            2.0        23        0        0        0              0
+               Ogawa2010_EBOV Bdbv-2026         35            2.0        34        0        0        0              1
 Panning2007_MARVprobe_control Bdbv-2007         12            9.0         0        0        0       11              1
-Panning2007_MARVprobe_control Bdbv-2012         23            9.0         0        0        0       17              6
-Panning2007_MARVprobe_control Bdbv-2026         35            9.0         0        0        0       23             12
+Panning2007_MARVprobe_control Bdbv-2012         23            9.0         0        0        0       23              0
+Panning2007_MARVprobe_control Bdbv-2026         35            9.0         0        0        0       33              2
           Panning2007_panfilo Bdbv-2007         12            4.0         0       12        0        0              0
-          Panning2007_panfilo Bdbv-2012         23            4.0         0       17        0        0              6
-          Panning2007_panfilo Bdbv-2026         35            4.0         0       25        0        0             10
+          Panning2007_panfilo Bdbv-2012         23            4.0         0       23        0        0              0
+          Panning2007_panfilo Bdbv-2026         35            4.0         0       33        0        0              2
                 SanchezFiloAB Bdbv-2007         12            4.0         0       12        0        0              0
-                SanchezFiloAB Bdbv-2012         23            4.0         0       17        0        0              6
-                SanchezFiloAB Bdbv-2026         35            4.0         0       25        0        0             10
+                SanchezFiloAB Bdbv-2012         23            4.0         0       23        0        0              0
+                SanchezFiloAB Bdbv-2026         35            4.0         0       33        0        0              2
              Weidmann2004_ENS Bdbv-2007         12            9.0         0        0        0       11              1
-             Weidmann2004_ENS Bdbv-2012         23            9.0         0        0        0       17              6
-             Weidmann2004_ENS Bdbv-2026         35            9.0         0        0        0       22             13
+             Weidmann2004_ENS Bdbv-2012         23            9.0         0        0        0       22              1
+             Weidmann2004_ENS Bdbv-2026         35            9.0         0        0        0       32              3
              Weidmann2004_ENZ Bdbv-2007         12            8.0         0        0        0       11              1
-             Weidmann2004_ENZ Bdbv-2012         23            8.0         0        0        0       17              6
-             Weidmann2004_ENZ Bdbv-2026         35            8.0         0        0        0       23             12
+             Weidmann2004_ENZ Bdbv-2012         23            8.0         0        0        0       23              0
+             Weidmann2004_ENZ Bdbv-2026         35            8.0         0        0        0       30              5
               Weidmann2004_MN Bdbv-2007         12           11.0         0        0        0       11              1
-              Weidmann2004_MN Bdbv-2012         23           11.0         0        0        0       17              6
-              Weidmann2004_MN Bdbv-2026         35           11.0         0        0        0       22             13
+              Weidmann2004_MN Bdbv-2012         23           11.0         0        0        0       21              2
+              Weidmann2004_MN Bdbv-2026         35           11.0         0        0        0       34              1
 
 ----------------------------------------------------------------------
 FOCUS  2026 outbreak arm - the key question
 ----------------------------------------------------------------------
 
   Greninger2024_PfiloL (n=35, mean worst mm=0.0)
-      LIKELY DETECTED: 25
-      NOT EVALUABLE: 10
+      LIKELY DETECTED: 34
+      NOT EVALUABLE: 1
 
   Ogawa2010_EBOV (n=35, mean worst mm=2.0)
-      LIKELY DETECTED: 25
-      NOT EVALUABLE: 10
+      LIKELY DETECTED: 34
+      NOT EVALUABLE: 1
 
   Panning2007_MARVprobe_control (n=35, mean worst mm=9.0)
-      LIKELY FAILURE: 23
-      NOT EVALUABLE: 12
+      LIKELY FAILURE: 33
+      NOT EVALUABLE: 2
 
   Panning2007_panfilo (n=35, mean worst mm=4.0)
-      REDUCED: 25
-      NOT EVALUABLE: 10
+      REDUCED: 33
+      NOT EVALUABLE: 2
 
   SanchezFiloAB (n=35, mean worst mm=4.0)
-      REDUCED: 25
-      NOT EVALUABLE: 10
+      REDUCED: 33
+      NOT EVALUABLE: 2
 
   Weidmann2004_ENS (n=35, mean worst mm=9.0)
-      LIKELY FAILURE: 22
-      NOT EVALUABLE: 13
+      LIKELY FAILURE: 32
+      NOT EVALUABLE: 3
 
   Weidmann2004_ENZ (n=35, mean worst mm=8.0)
-      LIKELY FAILURE: 23
-      NOT EVALUABLE: 12
+      LIKELY FAILURE: 30
+      NOT EVALUABLE: 5
 
   Weidmann2004_MN (n=35, mean worst mm=11.0)
-      LIKELY FAILURE: 22
-      NOT EVALUABLE: 13
+      LIKELY FAILURE: 34
+      NOT EVALUABLE: 1

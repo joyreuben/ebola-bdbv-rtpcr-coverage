@@ -2,13 +2,13 @@
 STEP 6: PRIMER3-PY THERMODYNAMICS ON REDUCED / LIKELY FAILURE CALLS
 ======================================================================
 
-REDUCED rows (Tm-modeled): 108 of 560
+REDUCED rows (Tm-modeled): 136 of 560
 LIKELY FAILURE rows (mismatch-count only, see module docstring
- 'WHY LIKELY FAILURE IS NOT TM-MODELED'): 202 of 560
+ 'WHY LIKELY FAILURE IS NOT TM-MODELED'): 262 of 560
 (AT RISK is empty post phantom-10 fix; LIKELY DETECTED / NOT EVALUABLE
  need no confirmation either way.)
 
-Wrote 270 component-level rows to thermodynamics_per_component.csv
+Wrote 340 component-level rows to thermodynamics_per_component.csv
 (REDUCED tier only - see module docstring for why LIKELY FAILURE is excluded)
 
 ----------------------------------------------------------------------
@@ -17,11 +17,11 @@ REDUCED tier only
 ----------------------------------------------------------------------
               assay  outbreak classification  n  mean_tm_shift  min_tm_shift  max_tm_shift
 Panning2007_panfilo Bdbv-2007        REDUCED 12          19.67         19.67         19.67
-Panning2007_panfilo Bdbv-2012        REDUCED 17          19.67         19.67         19.67
-Panning2007_panfilo Bdbv-2026        REDUCED 25          19.67         19.67         19.67
+Panning2007_panfilo Bdbv-2012        REDUCED 23          19.67         19.67         19.67
+Panning2007_panfilo Bdbv-2026        REDUCED 33          19.67         19.67         19.67
       SanchezFiloAB Bdbv-2007        REDUCED 12          19.67         19.67         19.67
-      SanchezFiloAB Bdbv-2012        REDUCED 17          19.67         19.67         19.67
-      SanchezFiloAB Bdbv-2026        REDUCED 25          19.67         19.67         19.67
+      SanchezFiloAB Bdbv-2012        REDUCED 23          19.67         19.67         19.67
+      SanchezFiloAB Bdbv-2026        REDUCED 33          19.67         19.67         19.67
 
 ----------------------------------------------------------------------
 CONFIRM-FLAG COUNTS  (>=5C THERMO CONFIRMS, 2-5C MARGINAL, <2C MINIMAL)
@@ -29,28 +29,28 @@ CONFIRM-FLAG COUNTS  (>=5C THERMO CONFIRMS, 2-5C MARGINAL, <2C MINIMAL)
 confirm_flag                   THERMO CONFIRMS
 assay               outbreak                  
 Panning2007_panfilo Bdbv-2007               12
-                    Bdbv-2012               17
-                    Bdbv-2026               25
+                    Bdbv-2012               23
+                    Bdbv-2026               33
 SanchezFiloAB       Bdbv-2007               12
-                    Bdbv-2012               17
-                    Bdbv-2026               25
+                    Bdbv-2012               23
+                    Bdbv-2026               33
 
 ----------------------------------------------------------------------
 LIKELY FAILURE  mismatch-count summary (NOT Tm-modeled, see docstring)
 ----------------------------------------------------------------------
                         assay  outbreak  n  mean_worst_mm  min_worst_mm  max_worst_mm
 Panning2007_MARVprobe_control Bdbv-2007 11            9.0             9             9
-Panning2007_MARVprobe_control Bdbv-2012 17            9.0             9             9
-Panning2007_MARVprobe_control Bdbv-2026 23            9.0             9             9
+Panning2007_MARVprobe_control Bdbv-2012 23            9.0             9             9
+Panning2007_MARVprobe_control Bdbv-2026 33            9.0             9             9
              Weidmann2004_ENS Bdbv-2007 11            9.0             9             9
-             Weidmann2004_ENS Bdbv-2012 17            9.0             9             9
-             Weidmann2004_ENS Bdbv-2026 22            9.0             9             9
+             Weidmann2004_ENS Bdbv-2012 22            9.0             9             9
+             Weidmann2004_ENS Bdbv-2026 32            9.0             9             9
              Weidmann2004_ENZ Bdbv-2007 11            8.0             8             8
-             Weidmann2004_ENZ Bdbv-2012 17            8.0             8             8
-             Weidmann2004_ENZ Bdbv-2026 23            8.0             8             8
+             Weidmann2004_ENZ Bdbv-2012 23            8.0             8             8
+             Weidmann2004_ENZ Bdbv-2026 30            8.0             8             8
               Weidmann2004_MN Bdbv-2007 11           11.0            11            11
-              Weidmann2004_MN Bdbv-2012 17           11.0            11            11
-              Weidmann2004_MN Bdbv-2026 22           11.0            11            11
+              Weidmann2004_MN Bdbv-2012 21           11.0            11            11
+              Weidmann2004_MN Bdbv-2026 34           11.0            11            11
 
 ----------------------------------------------------------------------
 CAVEATS

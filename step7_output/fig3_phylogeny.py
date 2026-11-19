@@ -101,7 +101,7 @@ def main():
         coll.set_color(INK_SECONDARY)
         coll.set_linewidth(0.9)
     ax_tree.set_facecolor(SURFACE)
-    ax_tree.set_title("Maximum-likelihood tree (FastTree, GTR)\nfull-genome MAFFT alignment, n=70",
+    ax_tree.set_title("Maximum-likelihood tree (FastTree, GTR, midpoint-rooted)\nfull-genome MAFFT alignment, n=70",
                        fontsize=10, color=INK_PRIMARY, loc="left")
     ax_tree.set_xlabel("substitutions / site", fontsize=8, color=INK_MUTED)
     ax_tree.set_ylabel("")

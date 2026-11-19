@@ -43,9 +43,9 @@ PANEL_FILE = Path("step2_output/validated_panel.csv")
 GENOMES_FILE = Path("step1_output/curated_sequences.fasta")
 
 PRIMERS = [
-    ("PANNING2007_FiloB", "Panning/Sanchez shared FiloB (reverse) — the real REDUCED-tier gap"),
-    ("GRENINGER2024_PfiloL_F", "Greninger 2024 PfiloL_F (forward) — clean broad-range performer"),
-    ("WEIDMANN2004_ENZ_F", "Weidmann 2004 ENZ_F (forward) — intentional EBOV-Zaire-only control"),
+    ("PANNING2007_FiloB", "A. FiloB reverse primer (Panning 2007 / Sanchez 1999): 4 mismatches, REDUCED"),
+    ("GRENINGER2024_PfiloL_F", "B. PfiloL_F forward primer (Greninger 2024): 0 mismatches, LIKELY DETECTED"),
+    ("WEIDMANN2004_ENZ_F", "C. ENZ_F forward primer (Weidmann 2004, Zaire-specific typing): LIKELY FAILURE"),
 ]
 
 
@@ -127,6 +127,11 @@ def main():
 
     fig.suptitle("Per-position mismatch frequency across 70 BDBV genomes, three representative primers",
                  fontsize=11, color=INK_PRIMARY, x=0.42, y=1.0)
+
+    from matplotlib.patches import Patch
+    fig.legend(handles=[Patch(facecolor=SKIP_GREY, label="Inosine (N) position, not scored")],
+               loc="lower center", bbox_to_anchor=(0.42, -0.04), frameon=False,
+               fontsize=8, labelcolor=INK_SECONDARY, handlelength=1.2)
 
     fig.savefig(OUT / "fig2_binding_site_schematics.png", dpi=300, bbox_inches="tight", facecolor=SURFACE)
     fig.savefig(OUT / "fig2_binding_site_schematics.pdf", bbox_inches="tight", facecolor=SURFACE)

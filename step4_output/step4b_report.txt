@@ -46,6 +46,21 @@ Per-genome reference coverage
     PP_006XHKB      18921 bp  covers 94.2%  [216-18055]
 
 ----------------------------------------------------------------------
+UNRESOLVED TARGET SITES  (record spans the site, but the site is N)
+----------------------------------------------------------------------
+  25 of 1540 oligo/genome pairs have more than 15% of the expected
+  binding site unresolved, across 8 genome(s):
+    PP_006X6JQ: 1 oligo(s) - WEIDMANN2004_MN_R
+    PP_006X6QC: 1 oligo(s) - WEIDMANN2004_MN_R
+    PP_006X6RA: 1 oligo(s) - WEIDMANN2004_ENS_F
+    PP_006Y8ME: 4 oligo(s) - OGAWA2010_EBOV_R, PANNING2007_FiloB, PANNING2007_FiloB-Ra, WEIDMANN2004_ENZ_P
+    PP_00711T3: 4 oligo(s) - WEIDMANN2004_ENS_P, WEIDMANN2004_ENZ_F, WEIDMANN2004_ENZ_R, WEIDMANN2004_MN_F
+    PP_0076RPB: 10 oligo(s) - GRENINGER2024_PfiloL_F, PANNING2007_FAMEBOSu, PANNING2007_FAMEBOg, PANNING2007_FiloA2.2, PANNING2007_FiloA2.3, PANNING2007_FiloA2.4, SANCHEZ1999_FILO_A, WEIDMANN2004_ENS_P, WEIDMANN2004_ENZ_F, WEIDMANN2004_ENZ_R
+    PP_0076RWX: 1 oligo(s) - WEIDMANN2004_ENZ_R
+    PP_0076RXV: 3 oligo(s) - WEIDMANN2004_ENS_P, WEIDMANN2004_ENZ_F, WEIDMANN2004_ENZ_R
+  Step 5 applies its own skip-fraction cutoff to this column.
+
+----------------------------------------------------------------------
 ABSENT TARGET SITES  (Step 4 mismatch counts here are artifacts)
 ----------------------------------------------------------------------
   9 of 1540 oligo/genome pairs (0.6%) have an absent target site,

@@ -7,9 +7,19 @@ Whenever possible, use well-tested packages to solve the problem. Do not re-inve
 
 ## Who I am
 Joy Okebugwu. MSc student, Molecular Biology and Genomics, Nigeria.
-Python on WSL2/Windows 11. Conda environment: `amr-multiomics`.
-Python path: `/home/joy/miniconda3/envs/amr-multiomics/bin/python`
-Working directory: `~/ebola project/`
+Python on WSL2/Windows 11.
+
+**Environment, corrected 2026-11-17.** The `amr-multiomics` conda env named in
+earlier versions of this file does not exist on this machine, and neither does
+`~/ebola project/`. What is actually here:
+- Repository: `C:\Users\Joy\ebola-bdbv-rtpcr-coverage`, i.e.
+  `/mnt/c/Users/Joy/ebola-bdbv-rtpcr-coverage` from WSL (Ubuntu-24.04, user `joy`)
+- Python: `/home/joy/.venvs/ebola-bdbv/bin/python` — a venv built from the
+  miniforge3 `typhi_amr` env (Python 3.10, `--system-site-packages`), carrying
+  pandas 2.3.3, Biopython 1.88, matplotlib 3.9.1, primer3-py 2.4.0, python-pptx 1.0.2
+- Conda lives at `/home/joy/miniforge3`, not miniconda3. Existing envs: amr,
+  gubbins, multiqc, mykrobe, ohp-amrfinder, seqsero2, typhi_amr
+- MAFFT and FastTree are needed for Figure 3 only
 
 ---
 
@@ -53,8 +63,8 @@ Source: Pathoplexus ebola-bdbv, Data use terms = OPEN, downloaded 2026-08-22.
 - 6 high-ambiguity genomes retained; N positions in binding sites are scored NOT EVALUABLE at Step 5, never as a match.
 - Most records carry INSDC accessions; use for deduplication if pulling from GenBank.
 - **2026-08-26 — full prefix audit completed (previously only re-checked the original 8).** A reviewer pointed out that the "must re-screen for GenBank Patent-division prefixes" instruction above had never actually been run against the full curated 70, only re-confirmed on the 8 already excluded — a narrative claim, not a completed check. Running it found 2 more: **JA489018.1** (PP_006X5YX.1, 2007 arm) and **MS811591.1** (PP_006X6B5.1, 2007 arm) both carry EBI Patent-division prefixes. Neither was excluded — the original 8 were excluded on prefix *plus* a patent-agent-style single submitter *plus* content divergent from every other record, and these two fail that combination: JA489018.1 is submitted by Towner JS et al. (the real CDC group, not a patent agent) and is byte-identical (MD5-matched) to NC_014373.1/FJ217161.1 — genuine BDBV data, already covered by the duplicate-triplet note above. MS811591.1 is submitted by Manuguerra/Escadafal/Kwasiborski/Vanhomwegen, a named Institut Pasteur hemorrhagic-fever-diagnostics group also linked to patent WO2016189490A1 and a companion Sci Rep paper — a substantial (6,633 bp) partial genome with unique sequence content, not a short single-submitter fragment. **This determination is provisional, not confirmed with the submitting groups.** It also means the manuscript's earlier description of MS811591.1 as "not a patent record" was wrong and has been corrected to "does not match the exclusion pattern used for the other 8." **Lesson: "check the prefix list" is not itself a completed action — it has to actually be run against the full retained set, not just re-verified on records already known to be excluded, or the instruction just restates itself without adding information.**
-- **2026-08-26 — "54 independently sequenced genomes" was an overclaim.** Of the 54 genomes classified REDUCED for Panning/Sanchez, 6 identical-hash duplicate groups (including the JA489018.1/FJ217161.1/NC_014373.1 triplet above) account for 14 of those rows — only **46 unique underlying sequences**, not 54. The manuscript's thermodynamic-confirmation section previously cited "54 independently sequenced genomes" as replication evidence without checking this; corrected throughout to 46.
-  - **Two different unique-sequence counts exist — do not mix them up.** **46** = unique sequences within the **54-genome Panning/Sanchez REDUCED subset** (Results, thermodynamic section). **62** = unique sequences across **all 70 curated records** (6 duplicate-hash groups covering 14 rows; Abstract/Methods). A draft abstract briefly described the full 70 as "representing 46 unique sequences," which is wrong — 46 is the REDUCED-subset figure. Whenever quoting a unique-sequence count, state which set it is over.
+- **2026-08-26 — "independently sequenced genomes" was an overclaim.** Among the genomes classified REDUCED for Panning/Sanchez, 6 identical-hash duplicate groups (including the JA489018.1/FJ217161.1/NC_014373.1 triplet above) account for 14 rows, so the REDUCED subset holds fewer unique sequences than records. The manuscript's thermodynamic-confirmation section previously cited the record count as replication evidence without checking this; corrected throughout to the unique-sequence count.
+  - **Two different unique-sequence counts exist — do not mix them up.** **60** = unique sequences within the **68-record Panning/Sanchez REDUCED subset** (Results, thermodynamic section; 136 rows across the two assay names). **62** = unique sequences across **all 70 curated records** (6 duplicate-hash groups covering 14 rows; Abstract/Methods). Whenever quoting a unique-sequence count, state which set it is over. **Post-fix values (2026-11-17);** the pre-fix REDUCED subset read 54 records / 46 unique / 108 rows, which must not be reused.
 
 **Species reference genomes** (fetched from NCBI, cached in `references/`):
 - EBOV: NC_002549.1 (18959 bp)
@@ -143,6 +153,44 @@ Three-prime window: last 5 bases of each primer scored separately.
 
 **Sanity check result:** 21/22 oligos fit their design species at ≤2 mismatches.
 Panel transcription confirmed correct. All mismatches against BDBV are real biology.
+
+### Step 4 correction — N-run ranking artifact (FIXED 2026-11-17)
+
+**The bug.** `best_alignment()` ranked candidate windows on mismatch count alone.
+Skipped positions (genome N, oligo inosine) score as neither match nor mismatch,
+so **any run of N at least as long as the oligo is an unbeatable window**: zero
+mismatches, every position skipped. Whenever the true binding site carried even
+one real mismatch, the oligo was parked on an unrelated N-run instead, and Step 5
+read the resulting skip fraction (~1.0) as NOT EVALUABLE. The mismatch count being
+reported was measuring nothing at all.
+
+**The fix.** `score_window()` now also counts `genome_skipped_positions` — skips
+caused by the genome base, not by oligo inosine — and `best_alignment()` ranks on
+`(mismatches + genome_skipped_positions, three_prime_mismatches)`. An N-run now
+scores as badly as it is uninformative. The inverse case (a genuinely unresolved
+binding site) is still caught, by Step 4b's coverage check and Step 5's skip
+fraction, so nothing is lost. Self-test #10 covers it. A new column
+`genome_skipped_positions` is written to `oligo_vs_genome_full.csv`.
+
+**Validated against ground truth,** not just re-run: every placement was compared
+with a MAFFT whole-genome alignment of the same 70 records. 349 of 374 high-skip
+pairs across 19 genomes were artifacts; 25 were genuinely unresolved. **Zero cases
+where Step 4 reported low skip but the true site was unresolved** — the bug only
+ever ran one way. Post-fix, all 1,231 evaluable non-Marburg pairs agree exactly
+with the alignment on both mismatch and 3′-mismatch count.
+
+**Effect.** NOT EVALUABLE assay/genome calls 143 → 25 of 560, in 9 records.
+**No mismatch count changed, no tier other than NOT EVALUABLE changed, and no
+thermodynamic result changed** (19.67°C primer3 / 22.80°C Tm_NN as before).
+Step 4b, 5, 6, 6b, 7 and the MIQE table were all re-run. `manuscript_draft.md` and
+`README.md` were updated to the corrected numbers on the same date.
+
+**Lesson, the same shape as the prefix-audit and coverage-check lessons:** a
+scoring function that can return "nothing was measured" must not let that outcome
+win a ranking against a real measurement. Check what an aligner's tie-break and
+optimum actually reward, not just that it returns something plausible.
+
+---
 
 **Output:** `step4_output/oligo_vs_genome_full.csv` — 1,540 rows (22 oligos × 70 genomes,
 rerun 2026-08-25 after excluding the 8 patent-division records)
@@ -233,33 +281,43 @@ else                             → LIKELY DETECTED
 
 **2026 arm results (n=35, unaffected by the patent-record exclusion — all excluded
 records were in the 2007 arm):**
-- Greninger PfiloL: 25 LIKELY DETECTED, 10 NOT EVALUABLE
-- Ogawa EBOV: 25 LIKELY DETECTED, 10 NOT EVALUABLE
-- Panning panfilo: 25 REDUCED, 10 NOT EVALUABLE
-- Sanchez FiloAB: 25 REDUCED, 10 NOT EVALUABLE
-- Weidmann ENZ: 23 LIKELY FAILURE, 12 NOT EVALUABLE
-- Weidmann ENS: 22 LIKELY FAILURE, 13 NOT EVALUABLE
-- Weidmann MN (Marburg control): 0 LIKELY DETECTED, 22 LIKELY FAILURE, 13 NOT EVALUABLE ✓ phantom-10 gone
+- Greninger PfiloL: 34 LIKELY DETECTED, 1 NOT EVALUABLE
+- Ogawa EBOV: 34 LIKELY DETECTED, 1 NOT EVALUABLE
+- Panning panfilo: 33 REDUCED, 2 NOT EVALUABLE
+- Sanchez FiloAB: 33 REDUCED, 2 NOT EVALUABLE
+- Weidmann ENZ: 30 LIKELY FAILURE, 5 NOT EVALUABLE
+- Weidmann ENS: 32 LIKELY FAILURE, 3 NOT EVALUABLE
+- Weidmann MN (Marburg control): 0 LIKELY DETECTED, 34 LIKELY FAILURE, 1 NOT EVALUABLE ✓ phantom-10 gone
+
+**2012 arm results (n=23):**
+- Greninger PfiloL, Ogawa EBOV: 23 LIKELY DETECTED (100%)
+- Panning panfilo, Sanchez FiloAB: 23 REDUCED (100%)
+- Weidmann ENZ: 23 LIKELY FAILURE (100%); ENS: 22 LIKELY FAILURE, 1 NOT EVALUABLE;
+  MN: 21 LIKELY FAILURE, 2 NOT EVALUABLE
 
 **2007 arm results (n=12, post patent-exclusion — this arm changed completely):**
 - Greninger PfiloL: **12 LIKELY DETECTED (100%)** — was 12 LIKELY DETECTED + 3 REDUCED
   + 3 LIKELY FAILURE + 1 more LIKELY FAILURE (LQ278396.1) before exclusion. Every
   non-DETECTED result in this arm came from the 8 removed patent records.
-- Ogawa EBOV: 11 LIKELY DETECTED, 1 LIKELY FAILURE (MS811591.1, 11 mm — a real
-  6633 bp partial genome, legitimate GenBank direct submission, genuine outlier
-  worth a footnote, not another artifact)
+- Ogawa EBOV: 11 LIKELY DETECTED, 1 NOT EVALUABLE (MS811591.1 — a 6,633 bp partial
+  record that does not span the Ogawa target site at all. It was reported as
+  1 LIKELY FAILURE at 11 mm before Step 4b; see Step 4b for why that was an artifact.)
 - Panning panfilo: 12 REDUCED (100%), mean 4 mismatches, uniform
 - Sanchez FiloAB: 12 REDUCED (100%), mean 4 mismatches, uniform
-- Weidmann ENZ: 12 LIKELY FAILURE (100%)
-- Weidmann ENS: 12 LIKELY FAILURE (100%)
-- Weidmann MN (Marburg control): 12 LIKELY FAILURE (100%) ✓ correct specificity
+- Weidmann ENZ / ENS / MN: 11 LIKELY FAILURE + 1 NOT EVALUABLE each (MS811591.1 again)
 
 Full per-arm breakdown (2007/2012/2026 x all 8 assay components) in `step5_output/step5_report.txt`.
 
-**Note:** NOT EVALUABLE now accounts for a meaningful share of every assay/arm
-(29% of the 2026 arm for several assays). This is genome N-content, not assay
-performance — worth a sentence in methods/limitations so reviewers don't read
-it as a coverage gap in the assay itself.
+**Note:** NOT EVALUABLE accounts for 25 of 560 assay/genome calls (4.5%), spread
+over 9 records — 0–8% of the 2007 arm, 0–9% of 2012, 3–14% of 2026, depending on
+the assay. This is genome N-content and record coverage, not assay performance —
+worth a sentence in methods/limitations so reviewers don't read it as a coverage
+gap in the assay itself.
+
+**These counts are post-fix (2026-11-17).** Before the N-run ranking fix in Step 4
+(see Step 4 below) they read 143 NOT EVALUABLE calls of 560, with 6 per assay in
+the 2012 arm and 10–13 in 2026. Those numbers are wrong and must not be reused;
+anything quoting "26% of 2012" or "29–37% of 2026" predates the fix.
 
 **Correctness fix 2026-08-25 (caught while drafting the manuscript):**
 `assay_coverage_summary.csv`'s `mean_worst_mm` column previously averaged
@@ -286,7 +344,7 @@ identical.
 Originally scoped (per the old plan below) to run `primer3-py` Tm-shift modeling
 on all AT RISK oligos — but AT RISK is empty post phantom-10 fix (Step 5's
 thresholds route everything into REDUCED or LIKELY FAILURE instead). Rescoped
-to model **REDUCED-tier rows only** (111 of 616 assay-genome rows). This was
+to model **REDUCED-tier rows only** (136 of 560 assay-genome rows). This was
 a correctness finding, not a scope shortcut — see below.
 
 **Why LIKELY FAILURE rows are NOT Tm-modeled:** `primer3.calc_heterodimer()`
@@ -312,8 +370,8 @@ using Step 4's own match/mismatch/skip rule before Tm modeling (see
 **REDUCED-tier results, rerun 2026-08-25 after excluding the 8 patent-division
 records (worst/classification-driving component, Tm shift in °C):**
 - Panning panfilo / Sanchez FiloAB (share FiloB reverse primer): 4 mismatches
-  → 19.67°C shift, **all 108 REDUCED rows identical**, now spanning all three
-  arms uniformly (2007 n=12, 2012 n=17, 2026 n=25) — the same divergence
+  → 19.67°C shift, **all 136 REDUCED rows identical**, now spanning all three
+  arms uniformly (2007 n=12, 2012 n=23, 2026 n=33, per assay) — the same divergence
   pattern in the founder 2007 outbreak as in 2012 and 2026, which is exactly
   the "historical, not new" evidence this project needs.
 
@@ -350,7 +408,7 @@ with internal-mismatch parameters (Allawi & SantaLucia 1997), for exactly
 the alignment it's handed. Reused the same realized primer/template pair
 Step 6 already builds, so both methods score the identical fixed alignment.
 **Result: 22.80°C shift (ref 55.62°C, duplex 32.82°C), vs primer3's
-19.67°C — larger, not smaller, uniform across all 108 REDUCED rows for the
+19.67°C — larger, not smaller, uniform across all 136 REDUCED rows for the
 same reason primer3's number was (one primer, one fixed mismatch pattern).**
 Absolute Tm differs between methods (different default salt/dNTP/oligo-
 concentration parameters and NN tables) but the shift, which is what Step 5/6

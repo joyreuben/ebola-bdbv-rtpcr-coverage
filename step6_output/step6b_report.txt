@@ -2,21 +2,21 @@
 STEP 6b: PINNED-ALIGNMENT NEAREST-NEIGHBOR Tm REANALYSIS (Bio.SeqUtils)
 REDUCED tier only, classification-driving (worst) component only
 ======================================================================
-REDUCED rows: 108
+REDUCED rows: 136
 
-Wrote 108 rows to nn_reanalysis_per_component.csv
+Wrote 136 rows to nn_reanalysis_per_component.csv
 
 ----------------------------------------------------------------------
 Per-oligo summary (Bio.SeqUtils Tm_NN, pinned alignment)
 ----------------------------------------------------------------------
                      n  mean_shift  min_shift  max_shift  std_shift
 oligo_id                                                           
-PANNING2007_FiloB  108        22.8       22.8       22.8        0.0
+PANNING2007_FiloB  136        22.8       22.8       22.8        0.0
 
 ----------------------------------------------------------------------
 primer3 calc_heterodimer() shift vs Bio.SeqUtils Tm_NN pinned shift
 ----------------------------------------------------------------------
-n compared: 108
+n compared: 136
 primer3 shift: mean=19.67  min=19.67  max=19.67
 Tm_NN shift  : mean=22.80  min=22.80  max=22.80
-Rows where BOTH methods exceed the 5°C 'THERMO CONFIRMS' band: 108 / 108
+Rows where BOTH methods exceed the 5°C 'THERMO CONFIRMS' band: 136 / 136

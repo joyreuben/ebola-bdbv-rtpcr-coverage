@@ -152,7 +152,7 @@ def classify(worst_mm: int, worst_3p: int, worst_skip_fraction: float,
     return "LIKELY DETECTED"             # none, or minor internal mismatches
 
 
-def best_component(df, oligo_ids, absent_pairs=frozenset()):
+def best_component(df, oligo_ids, absent_pairs=frozenset(), site_unresolved=None):
     """
     Given the full per-oligo/per-genome frame and a list of oligo ids that
     form a mix, return, per genome, the best (min mismatch) member, its
@@ -168,6 +168,14 @@ def best_component(df, oligo_ids, absent_pairs=frozenset()):
     low, and would otherwise be selected as the "best" member over a genuine
     member with a real, higher count. A genome missing from the returned frame
     for a role means every member of that role is absent.
+
+    skip_frac is the LARGER of two numbers: the skipped fraction of the
+    window Step 4 actually scored, and Step 4b's site_unresolved_fraction for
+    the oligo's expected binding site (site_unresolved, keyed by
+    (assay_id, genome_id)). Step 4 keeps oligos off N-runs, so when the true
+    site is itself an N-run the scored window is an unrelated resolved
+    stretch with skip ~0; only the expected-site figure shows that the pair
+    cannot be called.
     """
     sub = df[df["assay_id"].isin(oligo_ids)].copy()
     if absent_pairs:
@@ -177,6 +185,11 @@ def best_component(df, oligo_ids, absent_pairs=frozenset()):
     if sub.empty:
         return None
     sub["skip_frac"] = sub["skipped_positions"] / sub["oligo_length"]
+    if site_unresolved:
+        expected = [site_unresolved.get((a, g), 0.0)
+                    for a, g in zip(sub["assay_id"], sub["genome_id"])]
+        sub["skip_frac"] = sub["skip_frac"].combine(
+            pd.Series(expected, index=sub.index), max)
     # Rank within each genome by (mismatches, three_prime_mismatches)
     sub = sub.sort_values(["genome_id", "mismatches", "three_prime_mismatches"])
     best = sub.groupby("genome_id").first()
@@ -224,8 +237,19 @@ def main():
     # spanned by a genome record still gets a mismatch count from Step 4, but
     # that count is measured against unrelated sequence. Treat as NOT EVALUABLE.
     absent_pairs = set()
+    site_unresolved = {}
     if PRESENCE.exists():
         pres = pd.read_csv(PRESENCE)
+        if "site_unresolved_fraction" not in pres.columns:
+            sys.exit(f"{PRESENCE} has no site_unresolved_fraction column - "
+                     f"rerun step4b_target_coverage.py.")
+        site_unresolved = {
+            (a, g): float(f) for a, g, f in
+            pres[["assay_id", "genome_id", "site_unresolved_fraction"]].values}
+        n_unres = int((pres["target_present"]
+                       & (pres["site_unresolved_fraction"] > 0.15)).sum())
+        log(f"Expected-site resolution loaded: {n_unres} oligo/genome pair(s) "
+            f"have a present but >15% unresolved binding site.")
         absent_pairs = set(
             map(tuple, pres.loc[~pres["target_present"],
                                 ["assay_id", "genome_id"]].values))
@@ -244,7 +268,8 @@ def main():
         for role in ("forward", "reverse", "probe"):
             ids = struct.get(role, [])
             if ids:
-                comp_best[role] = best_component(df, ids, absent_pairs)
+                comp_best[role] = best_component(df, ids, absent_pairs,
+                                                 site_unresolved)
 
         genomes = df["genome_id"].unique()
         for g in genomes:

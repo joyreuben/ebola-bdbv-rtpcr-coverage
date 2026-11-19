@@ -146,7 +146,7 @@ def main():
     cbar.ax.tick_params(labelsize=8, color=INK_MUTED, labelcolor=INK_SECONDARY)
 
     # legend: not evaluable
-    legend_handles = [Patch(facecolor=NOT_EVAL_GREY, label="NOT EVALUABLE (N-rich binding site)")]
+    legend_handles = [Patch(facecolor=NOT_EVAL_GREY, label="NOT EVALUABLE (binding site unresolved or outside the record)")]
     ax.legend(handles=legend_handles, loc="upper center", bbox_to_anchor=(0.5, -0.12),
               frameon=False, fontsize=8, labelcolor=INK_SECONDARY, handlelength=1.2)
 

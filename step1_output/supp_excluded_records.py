@@ -32,7 +32,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from step4_oligo_alignment import best_alignment  # noqa: E402
 from step5_combine_assays import ASSAY_STRUCTURE, classify, best_component  # noqa: E402
 
-Entrez.email = "samigold8650@gmail.com"
+import os  # noqa: E402
+
+# NCBI asks for a contact email. Read it from the environment so a personal
+# address is not committed to this public repository:
+#   ENTREZ_EMAIL=you@example.com python step1_output/supp_excluded_records.py
+Entrez.email = os.environ.get("ENTREZ_EMAIL", "")
+if not Entrez.email:
+    sys.exit("Set ENTREZ_EMAIL=you@example.com (NCBI requires a contact email).")
 
 EXCLUDED = {
     # accession: (pathoplexus_id, exclusion_reason_short)
