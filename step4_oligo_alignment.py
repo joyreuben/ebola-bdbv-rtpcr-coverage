@@ -111,7 +111,8 @@ def base_matches(oligo_base: str, genome_base: str) -> str:
     return "match" if gb in allowed else "mismatch"
 
 
-def score_window(oligo: str, window: str, three_prime_at_start: bool = False) -> dict:
+def score_window(oligo: str, window: str, three_prime_at_start: bool = False,
+                 abandon_above=None):
     """
     Score an oligo against an equal-length genome window.
 
@@ -122,14 +123,26 @@ def score_window(oligo: str, window: str, three_prime_at_start: bool = False) ->
     primer's true 3' base sits at INDEX 0 of this array, not the end.
     `three_prime_at_start` tells this function which end to score as the
     3' end for the array it was actually given.
+
+    Skipped positions are counted in two ways: `skipped_positions` is every
+    non-scoring position (oligo inosine/N, or unresolved genome base), and
+    `genome_skipped_positions` is only the subset caused by the GENOME base
+    being unresolved (N/gap/ambiguity) under a scoring oligo base. The second
+    one is what best_alignment() uses to keep the oligo off N-runs.
+
+    `abandon_above` is a speed-up only: if given, scoring stops and None is
+    returned as soon as mismatches + genome_skipped_positions exceeds it
+    (that window can no longer beat the current best placement).
     """
-    mism = skips = 0
+    mism = skips = genome_skips = 0
     three_prime_mism = 0
     olen = len(oligo)
     for i, (ob, gb) in enumerate(zip(oligo, window)):
         result = base_matches(ob, gb)
         if result == "skip":
             skips += 1
+            if ob.upper() not in SKIP_BASES:
+                genome_skips += 1
         elif result == "mismatch":
             mism += 1
             in_three_prime = (
@@ -138,17 +151,39 @@ def score_window(oligo: str, window: str, three_prime_at_start: bool = False) ->
             )
             if in_three_prime:
                 three_prime_mism += 1
+        if abandon_above is not None and mism + genome_skips > abandon_above:
+            return None
     return {
         "mismatches": mism,
         "three_prime_mismatches": three_prime_mism,
         "skipped_positions": skips,
+        "genome_skipped_positions": genome_skips,
     }
 
 
 def best_alignment(oligo: str, genome: str) -> dict:
     """
     Slide oligo across genome (both strands), return the best-scoring
-    placement (fewest mismatches). Reports which strand won.
+    placement. Reports which strand won.
+
+    PLACEMENT RULE: the winning window minimises
+        mismatches + genome_skipped_positions
+    (ties broken by fewest 3'-end mismatches, then first position found).
+    Unresolved genome bases are still reported as skips, never as
+    mismatches - they only count against a window when deciding WHERE the
+    oligo sits.
+
+    Why: ranking on mismatches alone makes any stretch of N at least as long
+    as the oligo an unbeatable "0 mismatches, everything skipped" window. A
+    genome with one N-run anywhere then had every oligo with >=1 real
+    mismatch parked on that N-run and reported as unresolved, although its
+    true binding site was fully sequenced elsewhere in the same record
+    (349 of 374 high-skip oligo/genome pairs in the 70-genome set were this
+    artifact, checked against the MAFFT alignment).
+
+    The opposite failure - the true site really is inside an N-run, so the
+    winner is some unrelated resolved window - cannot be detected here. It is
+    caught by Step 4b (site_unresolved_fraction), which Step 5 consumes.
     """
     best = None
     for strand, probe in (("as_written", oligo), ("reverse_complement", rc(oligo))):
@@ -156,8 +191,12 @@ def best_alignment(oligo: str, genome: str) -> dict:
         three_prime_at_start = strand == "reverse_complement"
         for i in range(len(genome) - olen + 1):
             window = genome[i:i + olen]
-            score = score_window(probe, window, three_prime_at_start)
-            key = (score["mismatches"], score["three_prime_mismatches"])
+            score = score_window(probe, window, three_prime_at_start,
+                                 abandon_above=best["_key"][0] if best else None)
+            if score is None:
+                continue
+            key = (score["mismatches"] + score["genome_skipped_positions"],
+                   score["three_prime_mismatches"])
             if best is None or key < best["_key"]:
                 best = {
                     "_key": key,
@@ -262,6 +301,29 @@ def selftest() -> None:
     assert r2["mismatches"] == 1 and r2["three_prime_mismatches"] == 0, r2
     print("  [pass] 3'-end correctly identified on reverse-complement strand")
 
+    # 10. an N-run elsewhere in the genome must not capture the oligo
+    #     (regression). The true site carries 2 real mismatches; a 40 nt
+    #     N-run would score "0 mismatches, all skipped" under a
+    #     mismatch-only ranking and win.
+    oligo = "GATTACAGATTACAGA"
+    site  = "GATTACTGATTTCAGA"   # 2 internal mismatches
+    genome = "CCCCCC" + "N" * 40 + "CCCCCC" + site + "CCCCCC"
+    r = best_alignment(oligo, genome)
+    assert r["start"] == 52, r
+    assert r["mismatches"] == 2 and r["skipped_positions"] == 0, r
+    #     ...and a site that is itself partly N is still found and reported
+    #     with its skips, not swapped for some other window.
+    site_n = "GATTACNGATTTCAGA"  # 1 N + 1 mismatch
+    genome = "CCCCCC" + "N" * 40 + "CCCCCC" + site_n + "CCCCCC"
+    r = best_alignment(oligo, genome)
+    assert r["start"] == 52, r
+    assert r["mismatches"] == 1 and r["skipped_positions"] == 1, r
+    assert r["genome_skipped_positions"] == 1, r
+    #     oligo inosine/N is not a genome skip
+    r = best_alignment("GATTACNGATTACAGA", "CCCCCC" + "GATTACAGATTACAGA" + "CCCCCC")
+    assert r["skipped_positions"] == 1 and r["genome_skipped_positions"] == 0, r
+    print("  [pass] N-run elsewhere does not capture the oligo")
+
     print("-" * 50)
     print("ALL TESTS PASSED" if ok else "TESTS FAILED")
 
@@ -311,7 +373,12 @@ def main() -> None:
         selftest()
         return
 
-    if args.email.startswith("TODO"):
+    # An email is only needed if a reference actually has to be fetched from
+    # NCBI. With all four FASTAs already cached in --refs-dir (as shipped in
+    # this repository) the script runs offline with no email.
+    need_fetch = any(not (Path(args.refs_dir) / f"{name}_{acc}.fasta").exists()
+                     for name, acc in SPECIES_REFS.items())
+    if need_fetch and args.email.startswith("TODO"):
         sys.exit("Set your email: --email you@example.com  (NCBI requires it)")
     Entrez.email = args.email
 
@@ -420,6 +487,7 @@ def main() -> None:
                 "mismatches": b["mismatches"],
                 "three_prime_mismatches": b["three_prime_mismatches"],
                 "skipped_positions": b["skipped_positions"],
+                "genome_skipped_positions": b["genome_skipped_positions"],
                 "oligo_length": len(oligo),
             })
 

@@ -53,25 +53,25 @@ Writing per-oligo-per-genome results ...
 SUMMARY  mean mismatches per oligo (all study genomes)
 ----------------------------------------------------------------------
               assay_id      organism_scope  mean_mm  max_mm  min_mm  mean_3p_mm
-GRENINGER2024_PfiloL_F       pan-filovirus     0.00       0       0        0.00
+GRENINGER2024_PfiloL_F       pan-filovirus     0.04       3       0        0.00
 GRENINGER2024_PfiloL_R       pan-filovirus     0.00       0       0        0.00
-      OGAWA2010_EBOV_F       EBOV-specific     1.66      10       0        0.04
-      OGAWA2010_EBOV_R       EBOV-specific     0.91      11       0        0.03
-  PANNING2007_FAMEBOSu       pan-filovirus     0.77       1       0        0.00
-   PANNING2007_FAMEBOg       pan-filovirus     1.54       2       0        0.00
-    PANNING2007_FAMMBG       MARV-specific     6.89       9       0        0.13
-  PANNING2007_FiloA2.2       pan-filovirus     0.77       1       0        0.00
-  PANNING2007_FiloA2.3       pan-filovirus     2.31       3       0        0.00
-  PANNING2007_FiloA2.4       pan-filovirus     2.31       3       0        0.00
-     PANNING2007_FiloB       pan-filovirus     3.09       4       0        0.00
-  PANNING2007_FiloB-Ra       pan-filovirus     5.40       7       0        0.00
-    SANCHEZ1999_FILO_A       pan-filovirus     1.54       2       0        0.77
-    WEIDMANN2004_ENS_F EBOV-Sudan-specific     6.10       9       0        1.57
-    WEIDMANN2004_ENS_P EBOV-Sudan-specific     6.56      10       0        1.96
-    WEIDMANN2004_ENS_R EBOV-Sudan-specific     6.91      10       0        0.84
-    WEIDMANN2004_ENZ_F EBOV-Zaire-specific     3.64       6       0        1.33
-    WEIDMANN2004_ENZ_P EBOV-Zaire-specific     6.13       8       0        0.81
-    WEIDMANN2004_ENZ_R EBOV-Zaire-specific     3.87       7       0        0.74
-     WEIDMANN2004_MN_F       MARV-specific     4.96       8       0        1.17
-     WEIDMANN2004_MN_P       MARV-specific     8.37      11       0        0.84
-     WEIDMANN2004_MN_R       MARV-specific     6.11       8       0        0.79
+      OGAWA2010_EBOV_F       EBOV-specific     2.11      10       2        0.04
+      OGAWA2010_EBOV_R       EBOV-specific     1.29      11       1        0.06
+  PANNING2007_FAMEBOSu       pan-filovirus     1.10       8       1        0.03
+   PANNING2007_FAMEBOg       pan-filovirus     2.10       9       2        0.03
+    PANNING2007_FAMMBG       MARV-specific     9.00       9       9        0.03
+  PANNING2007_FiloA2.2       pan-filovirus     1.10       8       1        0.01
+  PANNING2007_FiloA2.3       pan-filovirus     3.09       9       3        0.01
+  PANNING2007_FiloA2.4       pan-filovirus     3.07       8       3        0.03
+     PANNING2007_FiloB       pan-filovirus     4.10      11       4        0.04
+  PANNING2007_FiloB-Ra       pan-filovirus     7.07      12       7        0.06
+    SANCHEZ1999_FILO_A       pan-filovirus     2.06       6       2        0.99
+    WEIDMANN2004_ENS_F EBOV-Sudan-specific     8.03       9       8        2.00
+    WEIDMANN2004_ENS_P EBOV-Sudan-specific     8.60      10       8        2.49
+    WEIDMANN2004_ENS_R EBOV-Sudan-specific     9.01      10       9        1.01
+    WEIDMANN2004_ENZ_F EBOV-Zaire-specific     4.90       6       4        1.79
+    WEIDMANN2004_ENZ_P EBOV-Zaire-specific     8.01      10       7        1.00
+    WEIDMANN2004_ENZ_R EBOV-Zaire-specific     5.03       7       5        1.04
+     WEIDMANN2004_MN_F       MARV-specific     6.53       8       6        1.53
+     WEIDMANN2004_MN_P       MARV-specific    11.00      11      11        1.00
+     WEIDMANN2004_MN_R       MARV-specific     8.00       8       8        1.00

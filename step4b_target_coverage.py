@@ -37,9 +37,17 @@ WHAT IT DOES
        gaps (divergent spots where one anchor failed) are bridged.
     3. Emits, per (oligo, genome), whether that oligo's reference target
        site falls inside a covered range.
+    4. Emits, per (oligo, genome), site_unresolved_fraction: the share of
+       the EXPECTED binding site (reference coordinate carried into the
+       genome by the nearest anchor) that is N/ambiguous. Step 4 places
+       each oligo on the best RESOLVED window, so when the true site sits
+       inside an N-run its reported mismatch count comes from unrelated
+       sequence and its own skip count is ~0. This column is the only place
+       that case is visible.
 
     Step 5 consumes this and forces NOT EVALUABLE when a required component's
-    target site is absent, instead of trusting a phantom mismatch count.
+    target site is absent or unresolved, instead of trusting a phantom
+    mismatch count.
 
 WHY EXACT-MATCH ANCHORS RATHER THAN FULL PAIRWISE ALIGNMENT
     A 19 kb x 19 kb pairwise alignment per genome is slow and buys nothing
@@ -83,11 +91,16 @@ ANCHOR_LEN = 40
 ANCHOR_STRIDE = 100
 BRIDGE_GAP = 1000
 
+# Only used for the report listing. The classification cutoff lives in
+# step5_combine_assays.py (classify), which reads the raw fraction.
+UNRESOLVED_REPORT_CUTOFF = 0.15
 
-def covered_intervals(genome: str, reference: str) -> list:
+
+def anchor_hits(genome: str, reference: str) -> list:
     """
-    Return merged [start, end) reference intervals (0-based) that this
-    genome demonstrably covers, via exact anchor matching.
+    Exact-match anchors sampled along the genome. Returns a list of
+    (reference_pos, genome_pos) pairs, 0-based, one per uniquely placed
+    anchor.
     """
     hits = []
     for i in range(0, len(genome) - ANCHOR_LEN + 1, ANCHOR_STRIDE):
@@ -101,7 +114,48 @@ def covered_intervals(genome: str, reference: str) -> list:
         # mapping is ambiguous and the interval is not evidence of coverage.
         if reference.find(anchor, pos + 1) != -1:
             continue
-        hits.append((pos, pos + ANCHOR_LEN))
+        hits.append((pos, i))
+    return hits
+
+
+def site_unresolved_fraction(start: int, end: int, anchors: list,
+                             genome: str) -> float:
+    """
+    Fraction of the oligo's EXPECTED binding site in this genome that is not
+    a resolved A/C/G/T base.
+
+    The expected site is reference range [start, end) carried into genome
+    coordinates with the offset of the nearest anchor. BDBV genomes differ
+    from the reference by substitutions, essentially not by indels, so the
+    nearest anchor's offset holds across an N-run of a kilobase or so (checked
+    against the MAFFT alignment: identical unresolved counts for all
+    oligo/genome pairs). Any part of the expected site that falls off either
+    end of the record counts as unresolved.
+
+    Why this exists: Step 4 places an oligo on the resolved window with the
+    fewest mismatches. If the true site is inside an N-run, that winner is an
+    unrelated stretch of genome and its mismatch count means nothing. Step 4
+    cannot see this; the reference coordinate can.
+    """
+    if not anchors:
+        return 1.0
+    mid = (start + end) / 2
+    ref_pos, genome_pos = min(anchors, key=lambda h: abs(h[0] - mid))
+    offset = genome_pos - ref_pos
+    g_start, g_end = start + offset, end + offset
+    window = genome[max(g_start, 0):max(g_end, 0)]
+    resolved = sum(window.count(b) for b in "ACGT")
+    return round(1.0 - resolved / (end - start), 4)
+
+
+def covered_intervals(genome: str, reference: str, anchors=None) -> list:
+    """
+    Return merged [start, end) reference intervals (0-based) that this
+    genome demonstrably covers, via exact anchor matching.
+    """
+    if anchors is None:
+        anchors = anchor_hits(genome, reference)
+    hits = [(pos, pos + ANCHOR_LEN) for pos, _ in anchors]
 
     if not hits:
         return []
@@ -189,9 +243,10 @@ def main() -> None:
     log("-" * 70)
     log("Per-genome reference coverage")
     log("-" * 70)
-    coverage, cov_rows = {}, []
+    coverage, anchors_by_genome, cov_rows = {}, {}, []
     for gid, gseq in genomes.items():
-        intervals = covered_intervals(gseq, reference)
+        anchors_by_genome[gid] = anchor_hits(gseq, reference)
+        intervals = covered_intervals(gseq, reference, anchors_by_genome[gid])
         coverage[gid] = intervals
         span = sum(e - s for s, e in intervals)
         cov_rows.append({
@@ -228,9 +283,26 @@ def main() -> None:
                 "target_start_1based": s + 1,
                 "target_end_1based": e,
                 "target_present": site_is_covered(s, e, coverage[gid]),
+                "site_unresolved_fraction": site_unresolved_fraction(
+                    s, e, anchors_by_genome[gid], genomes[gid]),
             })
     pres = pd.DataFrame(rows)
     pres.to_csv(OUT_DIR / "target_presence.csv", index=False)
+
+    unresolved = pres[pres["target_present"]
+                      & (pres["site_unresolved_fraction"] > UNRESOLVED_REPORT_CUTOFF)]
+    log("-" * 70)
+    log("UNRESOLVED TARGET SITES  (record spans the site, but the site is N)")
+    log("-" * 70)
+    log(f"  {len(unresolved)} of {len(pres)} oligo/genome pairs have more than "
+        f"{UNRESOLVED_REPORT_CUTOFF:.0%} of the expected")
+    log(f"  binding site unresolved, across "
+        f"{unresolved['genome_id'].nunique()} genome(s):")
+    for gid, grp in unresolved.groupby("genome_id"):
+        log(f"    {gid}: {len(grp)} oligo(s) - "
+            f"{', '.join(sorted(grp['assay_id']))}")
+    log("  Step 5 applies its own skip-fraction cutoff to this column.")
+    log()
 
     absent = pres[~pres["target_present"]]
     log("-" * 70)
